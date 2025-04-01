@@ -56,20 +56,20 @@ As entidades principais do CourseRank são:
 - **Manutenção de Avaliação**: Gerencia as avaliações, afetando a entidade **Avaliação** com CRUD, e lê informações dos **Cursos** (R) e **Plataformas** (R) para contextualizar as avaliações.
 
 ---
+## Matriz Perfil x Funcionalidade (Revisada)
 
-## Matriz Perfil x Funcionalidade
-
-| Funcionalidade              | Usuário Consumidor | Administrador | Plataforma |
-|-----------------------------|--------------------|---------------|------------|
-| **Manutenção de Cursos**    | X                  | X             | -          |
-| **Manutenção de Cupons**    | X                  | X             | -          |
-| **Manutenção de Avaliação** | X                  | X             | X          |
+| Funcionalidade              | Usuário Consumidor | Administrador |
+|-----------------------------|--------------------|--------------|
+| **Manutenção de Cursos**    | X              |  X             |
+| **Manutenção de Cupons**    | X                |  X             |
+| **Manutenção de Avaliação** | X                  | X             |
 
 ### Explicação da Matriz Perfil x Funcionalidade
-- **Manutenção de Cursos**: O **Usuário Consumidor** adiciona e gerencia cursos, e o **Administrador** tem acesso para supervisão.
-- **Manutenção de Cupons**: O **Usuário Consumidor** gerencia seus cup Ascendingly, o **Administrador** também tem acesso para supervisão.
-- **Manutenção de Avaliação**: O **Usuário Consumidor** cria e visualiza avaliações, o **Administrador** gerencia, e a **Plataforma** pode fornecer ou visualizar avaliações.
+- **Manutenção de Cursos**: O **Usuário Consumidor** adiciona e gerencia cursos, e o **Administrador** tem acesso para supervisão. O **Moderador** não precisa dessa funcionalidade, pois sua função é focada em avaliações.
+- **Manutenção de Cupons**: O **Usuário Consumidor** gerencia seus cupons, e o **Administrador** tem acesso para suporte. O **Moderador** não precisa dessa funcionalidade, pois cupons são pessoais e não requerem moderação.
+- **Manutenção de Avaliação**: O **Usuário Consumidor** cria e visualiza avaliações, o **Moderador** modera (edita ou remove avaliações inadequadas), e o **Administrador** tem acesso total para gerenciamento e suporte.
 
+---
 ---
 
 ## Protótipos de Tela
