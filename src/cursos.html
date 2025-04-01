@@ -5,85 +5,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CourseRank - Cursos</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-containeir">
+    <div class="app-container">
         <header>
             <div class="header-content">
-                 <img src="https://via.placeholder.com/120x40.png?text=CourseRank" alt="CourseRank Logo" class="logo"> </div>
-
+                <img src="https://via.placeholder.com/120x40.png?text=CourseRank" alt="CourseRank Logo" class="logo">
+            </div>
+            
             <nav class="desktop-nav">
                 <a href="cursos.html" class="active">Cursos</a>
-                <a href="#categorias">Categorias</a>
-                <a href="#plataformas">Plataformas</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="plataformas.html">Plataformas</a>
                 <a href="minha_lista.html">Minha Lista</a>
-                <a href="#perfil">Perfil</a>
+                <a href="perfil.html">Perfil</a>
             </nav>
-
-             </header>
+        </header>
+        
         <main>
             <div class="search-bar">
                 <input type="search" placeholder="Pesquise por um curso...">
                 <i class="fas fa-search search-icon"></i>
             </div>
+            
             <div class="filter-buttons">
-                <button>Categorias</button>
-                <button>Avaliados</button>
-                <button>Plataforma</button>
+                <button>Todos</button>
+                <button>Programação</button>
+                <button>Design</button>
+                <button>Marketing</button>
+                <button>Negócios</button>
             </div>
+            
             <div class="course-grid">
-                <div class="course-card">
-                    <img src="https://via.placeholder.com/100x60.png?text=Python" alt="Python Course">
-                    <h3>Python</h3>
+                <!-- Curso 1 -->
+                <a href="cursoespecifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=Python" alt="Curso de Python">
+                    <h3>Python Completo</h3>
+                    <div class="platform">Alura</div>
                     <div class="rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="far fa-star"></i>
+                        <span class="rating-count">(125)</span>
                     </div>
-                </div>
-                <div class="course-card">
-                    <img src="https://via.placeholder.com/100x60.png?text=CSS" alt="CSS Course">
-                    <h3>CSS</h3>
+                </a>
+                
+                <!-- Curso 2 -->
+                <a href="cursoespecifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=CSS" alt="Curso de CSS">
+                    <h3>CSS Avançado e Sass</h3>
+                    <div class="platform">Udemy</div>
                     <div class="rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
+                        <span class="rating-count">(98)</span>
                     </div>
-                </div>
-                 <div class="course-card">
-                    <img src="https://via.placeholder.com/100x60.png?text=IA" alt="AI Course">
-                    <h3>Inteligência Artificial</h3>
+                </a>
+                
+                <!-- Curso 3 -->
+                <a href="cursoespecifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=IA" alt="Curso de Inteligência Artificial">
+                    <h3>Inteligência Artificial: Fundamentos</h3>
+                    <div class="platform">Coursera</div>
                     <div class="rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="far fa-star"></i>
                         <i class="far fa-star"></i>
+                        <span class="rating-count">(64)</span>
                     </div>
-                </div>
-                <div class="course-card">
-                    <img src="https://via.placeholder.com/100x60.png?text=AWS" alt="AWS Course">
-                    <h3>AWS</h3>
-                     <div class="rating">
+                </a>
+                
+                <!-- Curso 4 -->
+                <a href="cursoespecifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=AWS" alt="Curso de AWS">
+                    <h3>AWS Certified Solutions Architect</h3>
+                    <div class="platform">Udemy</div>
+                    <div class="rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="far fa-star"></i>
+                        <span class="rating-count">(212)</span>
                     </div>
-                </div>
-                 </div>
+                </a>
+                
+                <!-- Curso 5 -->
+                <a href="cursoespecifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=React" alt="Curso de React">
+                    <h3>React JS: Do Zero ao Profissional</h3>
+                    <div class="platform">Alura</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span class="rating-count">(176)</span>
+                    </div>
+                </a>
+                
+                <!-- Curso 6 -->
+                <a href="cursoespecifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=UX/UI" alt="Curso de UX/UI Design">
+                    <h3>UX/UI Design: Princípios e Práticas</h3>
+                    <div class="platform">Domestika</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span class="rating-count">(89)</span>
+                    </div>
+                </a>
+                
+                <!-- Curso 7 -->
+                <a href="curso_especifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=JavaScript" alt="Curso de JavaScript">
+                    <h3>JavaScript Moderno ES6+</h3>
+                    <div class="platform">Origamid</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span class="rating-count">(152)</span>
+                    </div>
+                </a>
+                
+                <!-- Curso 8 -->
+                <a href="curso_especifico.html" class="course-card">
+                    <img src="https://via.placeholder.com/250x150.png?text=Marketing" alt="Curso de Marketing Digital">
+                    <h3>Marketing Digital Completo</h3>
+                    <div class="platform">Hotmart</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span class="rating-count">(78)</span>
+                    </div>
+                </a>
+            </div>
         </main>
-        <footer class="mobile-nav"> 
-            <button><i class="fas fa-home"></i></button>
-            <button><i class="fas fa-search"></i></button>
-            <button class="active"><i class="fas fa-list"></i></button>
-            <button><i class="fas fa-user"></i></button>
+        <footer class="mobile-nav">
+            <button onclick="window.location.href='inicio.html'">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </button>
+            <button onclick="window.location.href='buscar.html'">
+                <i class="fas fa-search"></i>
+                <span>Buscar</span>
+            </button>
+            <button class="active" onclick="window.location.href='cursos.html'">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Cursos</span>
+            </button>
+            <button onclick="window.location.href='minha_lista.html'">
+                <i class="fas fa-list"></i>
+                <span>Minha Lista</span>
+            </button>
+            <button onclick="window.location.href='perfil.html'">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </button>
         </footer>
     </div>
 </body>

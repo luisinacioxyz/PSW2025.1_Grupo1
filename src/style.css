@@ -1,565 +1,718 @@
+/* CourseRank - Estilos principais
+   Desenvolvido para desktop e mobile
+   Versão 1.0
+*/
+
 :root {
-    --primary-color: #007bff; /* Example blue */
-    --secondary-color: #6c757d; /* Example gray */
+    /* Esquema de cores principal */
+    --primary-color: #3066BE;
+    --primary-dark: #1D4C9E;
+    --primary-light: #5A88D3;
+    --secondary-color: #F67280;
+    --accent-color: #F8B195;
+    
+    /* Cores neutras */
     --light-gray: #f8f9fa;
     --medium-gray: #e9ecef;
     --dark-gray: #343a40;
     --text-color: #212529;
-    --star-color: #ffc107; /* Gold */
     --white: #ffffff;
-    --border-radius: 8px;
+    
+    /* UI Elements */
+    --star-color: #FFD700; /* Dourado para estrelas */
+    --error-color: #dc3545;
+    --success-color: #28a745;
+    
+    /* Tipografia */
+    --font-main: 'Nunito', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-headings: 'Montserrat', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Layout */
+    --border-radius: 0px;
+    --border-radius-lg: 0px;
     --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-* {
+    --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.2s;
+    
+    /* Container sizes */
+    --container-max-width: 100vw;
+    --header-height: 60px;
+    --footer-height: 60px;
+  }
+  
+  /* Reset e Estilos Básicos */
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--medium-gray);
+  }
+  
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: var(--font-main);
+    background-color: var(--light-gray);
     color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align to top */
-    min-height: 100vh;
-    padding: 0px;
-}
-
-/* Mobile Screen Container */
-.app-container {
-    width: 100%; /* Mobile first - take full width */
-    min-height: 100vh; /* Ensure it takes at least full viewport height */
-    max-width: 420px; /* Max width for mobile view */
-    margin: 0 auto; /* Center on larger viewports if needed */
-    background-color: var(--white);
-    /* Remove fixed height: height: 750px; */
-    /* Keep border/shadow for mobile 'frame' effect if desired */
-    border: 1px solid #ccc;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius); /* Keep radius */
-    overflow: hidden;
+    line-height: 1.6;
+    padding-right: calc(100vw -100%);
     display: flex;
     flex-direction: column;
-    position: relative; /* Needed if footer is fixed */
-}
-
-/* Adjust Header for potential Logo and Desktop Nav */
-header {
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headings);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+  }
+  
+  a:hover {
+    color: var(--primary-dark);
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  button, .btn {
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 500;
+    transition: all var(--transition-speed) ease;
+  }
+  
+  /* === Layout Principal === */
+  .app-container {
+    width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    margin: 0;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  /* === Header === */
+  header {
     background-color: var(--primary-color);
     color: var(--white);
-    padding: 10px 15px; /* Adjusted padding */
+    padding: 0 1rem;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space out content */
-    min-height: 55px; /* Adjusted height */
-    position: sticky; /* Make header sticky */
+    justify-content: space-between;
+    min-height: var(--header-height);
+    position: sticky;
     top: 0;
-    z-index: 10;
-    width: 100%; /* Ensure header spans container width */
-}
-
-.header-content {
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-content {
     display: flex;
     align-items: center;
-    gap: 15px;
-}
-.header-content .logo {
-    height: 30px; /* Adjust logo size */
+    gap: 1rem;
+  }
+  
+  .logo {
+    height: 40px;
     width: auto;
-}
-header h1 { /* If you still use h1 */
-    font-size: 1.1rem; /* Adjust size */
-    margin: 0;
-}
-
-/* Desktop Navigation - Hidden by default */
-.desktop-nav {
-    display: none; /* Hide on mobile */
+  }
+  
+  .back-button, 
+  .action-button {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.2rem;
+    display: flex;
     align-items: center;
-    gap: 20px;
-}
-.desktop-nav a {
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color var(--transition-speed) ease;
+  }
+  
+  .back-button:hover, 
+  .action-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* === Navigation === */
+  .desktop-nav {
+    display: none; /* Hidden on mobile */
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .desktop-nav a {
     color: var(--white);
     text-decoration: none;
     font-size: 0.95rem;
-    padding: 5px 0;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s ease;
-}
-.desktop-nav a:hover,
-.desktop-nav a.active {
-    border-bottom-color: var(--white);
+    padding: 0.5rem 0;
+    position: relative;
     font-weight: 500;
-}
-
-/* Mobile Navigation (Footer) */
-.mobile-nav {
-    background-color: var(--white);
-    border-top: 1px solid var(--medium-gray);
-    display: flex; /* Display by default (mobile) */
-    justify-content: space-around;
-    padding: 8px 0; /* Adjusted padding */
-    position: static; /* Stick to bottom */
+  }
+  
+  .desktop-nav a::after {
+    content: '';
+    position: absolute;
     bottom: 0;
-    width: 100vw; /* Ensure footer spans container width */
-}
-/* --- Rest of your existing base (mobile) styles --- */
-/* Ensure elements like forms, cards use relative widths (like 100%) */
-/* Update course grid for mobile if needed */
-.course-grid {
-    display: grid;
-    /* Start with 1 column on very small screens, then 2 */
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 15px;
-}
-
-.course-card {
-    /* Styles as before */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Helps align content if heights vary */
-}
-.course-card .platform-tag {
-    font-size: 0.8rem;
-    color: var(--secondary-color);
-    margin: 4px 0;
-}
-.course-card .rating span {
-    font-size: 0.8rem;
-    color: var(--secondary-color);
-    margin-left: 5px;
-}
-
-/* Add helper class to hide elements only on mobile */
-.desktop-only { display: none; }
-.mobile-only { display: block; } /* Or flex, inline, etc. */
-
-
-/* --- Media Query for Larger Screens (Tablets and Desktops) --- */
-@media (min-width: 768px) {
-
-    body {
-        /* Remove forced centering for mobile screen */
-        padding: 0; /* Reset body padding if needed */
-        background-color: var(--light-gray); /* Body background for desktop */
-    }
-
-    .app-container {
-        max-width: 1200px; /* Allow wider container */
-        width: 100%;
-        margin: 20px auto; /* Center container with margin */
-        min-height: auto; /* Let content define height */
-        /* Optional: Remove border/shadow for seamless look */
-        border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 10px; /* Slightly larger radius */
-    }
-
-    header {
-        padding: 15px 30px; /* Increase header padding */
-        border-top-left-radius: 10px; /* Match container radius */
-        border-top-right-radius: 10px;
-        position: relative; /* Can remove sticky if preferred on desktop */
-    }
-
-    .header-content .logo {
-        height: 35px; /* Slightly larger logo */
-    }
-
-    /* Show Desktop Nav, Hide Mobile Footer Nav */
-    .desktop-nav {
-        display: flex; /* Show desktop nav */
-    }
-    .mobile-nav {
-        display: none; /* Hide mobile footer nav */
-    }
-    .mobile-only { display: none; } /* Hide mobile-only elements */
-    .desktop-only { display: block; } /* Show desktop-only elements */
-
-    main {
-        padding: 30px; /* Increase main content padding */
-    }
-
-    /* Adjust Grid Layout */
-    .course-grid {
-        /* Increase columns */
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 25px; /* Increase gap */
-    }
-
-    .course-card h3 {
-        font-size: 1.05rem;
-    }
-
-     /* Center forms on larger screens */
-    .add-course-form,
-    .rating-form {
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 20px 0; /* Add some vertical padding */
-    }
-
-    /* Adjust Course Detail Layout (Example) */
-    .course-detail-header {
-         padding-bottom: 25px;
-    }
-    .course-detail-header img {
-         max-width: 250px; /* Larger image */
-    }
-     .course-detail-header h2 {
-        font-size: 1.8rem; /* Larger title */
-    }
-     /* Maybe arrange description/reviews side-by-side if complex */
-     /* For simplicity, we keep single column flow here */
-      section {
-        margin-bottom: 30px;
-    }
-    section h3 {
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-    }
-
-     /* Filter buttons might need adjusted spacing */
-     .filter-buttons {
-        gap: 15px;
-        margin-bottom: 25px;
-     }
-      .filter-buttons button {
-         padding: 10px 20px;
-         font-size: 0.95rem;
-     }
-
-} /* End of Media Query */
-
-
-/* Header */
-header {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 12px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Adjust as needed */
-    position: relative; /* For absolute positioning inside */
-    min-height: 50px;
-}
-
-header h1 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-align: center;
-    flex-grow: 1; /* Allow title to take space */
-}
-
-header .back-button, header .save-button {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 5px;
-}
-/* Make back button take up start space */
-header .back-button {
-   position: absolute;
-   left: 15px;
-}
-/* Make save button take up end space */
-header .save-button {
-   position: absolute;
-   right: 15px;
-}
-
-
-/* Main Content Area */
-main {
-    flex-grow: 1; /* Take remaining vertical space */
-    overflow-y: auto; /* Allow scrolling */
-    padding: 20px;
-    background-color: var(--light-gray);
-}
-
-/* Footer Navigation */
-footer {
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--white);
+    transition: width var(--transition-speed) ease;
+  }
+  
+  .desktop-nav a:hover::after,
+  .desktop-nav a.active::after {
+    width: 100%;
+  }
+  
+  /* === Mobile Navigation (Footer) === */
+  .mobile-nav {
     background-color: var(--white);
     border-top: 1px solid var(--medium-gray);
     display: flex;
     justify-content: space-around;
-    padding: 10px 0;
-    min-height: 55px;
-    width: 100vw;
+    align-items: center;
+    padding: 0;
     position: fixed;
     bottom: 0;
-}
-
-footer button {
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--footer-height);
+    z-index: 90;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .mobile-nav button {
     background: none;
     border: none;
-    color: var(--secondary-color);
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: color 0.2s ease;
-}
-
-footer button:hover,
-footer button.active {
+    color: var(--dark-gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    height: 100%;
+    padding: 0.5rem 0;
+    transition: color var(--transition-speed) ease;
+  }
+  
+  .mobile-nav button i {
+    font-size: 1.3rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .mobile-nav button span {
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+  
+  .mobile-nav button:hover,
+  .mobile-nav button.active {
     color: var(--primary-color);
-}
-
-/* --- Specific Component Styles --- */
-
-/* Search Bar */
-.search-bar {
-    position: relative;
-    margin-bottom: 15px;
-}
-.search-bar input[type="search"] {
+  }
+  
+  /* === Main Content === */
+  main {
+    flex: 1;
+    padding: 1.5rem;
+    margin-bottom: var(--footer-height); /* Space for fixed footer on mobile */
+    max-width: 100%;
     width: 100%;
-    padding: 10px 15px 10px 40px; /* Space for icon */
+    overflow-y: auto;
+    margin: 0 auto var(--footer-height) auto;
+  }
+  
+  /* === Search Bar === */
+  .search-bar {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-bar input[type="search"] {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
     border: 1px solid var(--medium-gray);
     border-radius: var(--border-radius);
     font-size: 1rem;
-}
-.search-icon {
+    font-family: var(--font-main);
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  }
+  
+  .search-bar input[type="search"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(48, 102, 190, 0.2);
+  }
+  
+  .search-icon {
     position: absolute;
-    left: 15px;
+    left: 1rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--secondary-color);
-}
-
-
-/* Filter Buttons */
-.filter-buttons {
+    font-size: 1.2rem;
+  }
+  
+  /* === Filter Buttons === */
+  .filter-buttons {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* Allow wrapping on small screens if needed */
-}
-.filter-buttons button {
-    padding: 8px 15px;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .filter-buttons button {
+    padding: 0.5rem 1rem;
     border: 1px solid var(--medium-gray);
     background-color: var(--white);
     color: var(--primary-color);
-    border-radius: 20px; /* Pill shape */
-    cursor: pointer;
+    border-radius: 20px;
     font-size: 0.9rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-.filter-buttons button:hover {
+    transition: all var(--transition-speed) ease;
+  }
+  
+  .filter-buttons button:hover,
+  .filter-buttons button.active {
     background-color: var(--primary-color);
     color: var(--white);
-}
-
-/* Course Grid & Cards */
-.course-grid {
+    border-color: var(--primary-color);
+  }
+  
+  /* === Course Grid & Cards === */
+  .course-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 15px;
-}
-
-.course-card {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  
+  .course-card {
     background-color: var(--white);
     border-radius: var(--border-radius);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    padding: 10px;
-    text-align: center;
-    transition: transform 0.2s ease;
-}
-.course-card:hover {
-    transform: translateY(-3px);
-}
-
-.course-card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
-    object-fit: cover; /* Cover the area */
-}
-
-.course-card h3 {
-    font-size: 0.95rem;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-/* Rating Stars */
-.rating {
-    color: var(--star-color);
-    font-size: 0.9rem;
-}
-.rating .far { /* Empty star color */
-    color: #ccc;
-}
-
-/* Buttons */
-.btn-primary, .btn-secondary {
-    display: block; /* Make buttons block level */
-    width: 100%;
-    padding: 12px 15px;
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 15px; /* Spacing for buttons */
-    transition: background-color 0.2s ease;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: var(--white);
-}
-.btn-primary:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-.btn-secondary {
-    background-color: var(--light-gray);
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-}
-.btn-secondary:hover {
-    background-color: var(--medium-gray);
-}
-
-
-/* Add Course Form / Rating Form */
-.add-course-form, .rating-form {
-    margin-top: 20px;
+    box-shadow: var(--box-shadow);
+    padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between form elements */
-}
-
-.add-course-form label, .rating-form label {
-    font-weight: 500;
-    margin-bottom: -5px; /* Reduce space below label */
-}
-
-.add-course-form input[type="date"],
-.rating-form textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--medium-gray);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+  }
+  
+  .course-card img {
     border-radius: var(--border-radius);
+    margin-bottom: 0.8rem;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  
+  .course-card h3 {
     font-size: 1rem;
-    font-family: inherit; /* Use body font */
-}
-.rating-form textarea {
-    resize: vertical; /* Allow vertical resize only */
-}
-
-.rating-form .rating-input {
-    font-size: 2rem; /* Larger stars for input */
-    color: #ccc; /* Default empty star color */
-    cursor: pointer;
-}
-.rating-form .rating-input i:hover {
-    color: var(--star-color); /* Highlight on hover */
-}
-/* Add JS to handle filling stars on click */
-
-
-/* Simple Course Info (Add/Rate screens) */
-.course-info-simple {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.course-info-simple img {
-    max-width: 120px;
-    border-radius: var(--border-radius);
-    margin-bottom: 10px;
-}
-.course-info-simple h2 {
-    font-size: 1.3rem;
-    margin-bottom: 5px;
-}
-.course-info-simple p {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    line-height: 1.3;
+  }
+  
+  .course-card .platform {
+    font-size: 0.8rem;
     color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+  }
+  
+  /* === Rating Component === */
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    margin-top: auto;
+    padding-top: 0.8rem;
+  }
+  
+  .rating i {
+    color: var(--star-color);
     font-size: 0.9rem;
-}
-
-/* Course Detail Screen */
-.course-detail-header {
-    text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--medium-gray);
-}
-.course-detail-header img {
-    max-width: 200px;
-    border-radius: var(--border-radius);
-    margin-bottom: 15px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-.course-detail-header h2 {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-}
-.course-detail-header .platform {
-    color: var(--secondary-color);
-    margin-bottom: 10px;
-}
-.rating-summary {
+  }
+  
+  .rating .far {
+    color: #ddd;
+  }
+  
+  .rating-count {
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+    margin-left: 0.5rem;
+  }
+  
+  .rating-input {
+    font-size: 1.8rem;
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-.rating-summary .average-rating {
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-.rating-summary .review-count {
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-}
-
-/* Course Sections (Description, Reviews) */
-section {
-    margin-bottom: 25px;
-}
-section h3 {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--medium-gray);
-}
-section p {
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
-
-/* Individual Review Styling */
-.course-reviews .review {
-    background-color: var(--white);
-    padding: 15px;
+    gap: 0.3rem;
+    margin: 1rem 0;
+  }
+  
+  .rating-input i {
+    cursor: pointer;
+    color: #ddd;
+    transition: color var(--transition-speed) ease;
+  }
+  
+  .rating-input i:hover,
+  .rating-input i.active {
+    color: var(--star-color);
+  }
+  
+  /* === Buttons === */
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
     border-radius: var(--border-radius);
-    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+    transition: all var(--transition-speed) ease;
+    border: none;
+    font-size: 0.95rem;
+    width: 100%;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--white);
+  }
+  
+  .btn-secondary:hover {
+    background-color: #e45e6c;
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+  }
+  
+  .btn-outline:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+  }
+  
+  /* === Forms === */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  }
+  
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(48, 102, 190, 0.2);
+  }
+  
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: #adb5bd;
+  }
+  
+  /* === Course Detail === */
+  .course-detail-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--medium-gray);
+    text-align: center;
+  }
+  
+  .course-detail-header img {
+    max-width: 180px;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .course-detail-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .course-detail-header .platform {
+    color: var(--secondary-color);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  
+  .rating-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .average-rating {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-gray);
+  }
+  
+  .review-count {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+  }
+  
+  /* === Course Sections === */
+  .course-section {
+    margin-bottom: 2rem;
+  }
+  
+  .course-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--medium-gray);
+    color: var(--dark-gray);
+  }
+  
+  /* === Reviews === */
+  .review {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-.review-header {
+    border-left: 3px solid var(--primary-light);
+  }
+  
+  .review-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
-}
-.review-header .user-name {
+    margin-bottom: 0.8rem;
+  }
+  
+  .user-name {
     font-weight: 600;
-    font-size: 0.9rem;
-}
-.review p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    color: var(--dark-gray);
+  }
+  
+  .review-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+  
+  .review-content {
+    font-size: 0.95rem;
     line-height: 1.5;
-    color: #555;
-}
+  }
+  
+  /* === Add Course Screen === */
+  .course-info-simple {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .course-info-simple img {
+    width: 120px;
+    height: auto;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .course-info-simple h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .course-info-simple p {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+  }
+  
+  .add-course-form,
+  .rating-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* === Helper Classes === */
+  .text-center { text-align: center; }
+  .text-right { text-align: right; }
+  .text-left { text-align: left; }
+  
+  .mt-1 { margin-top: 0.5rem; }
+  .mt-2 { margin-top: 1rem; }
+  .mt-3 { margin-top: 1.5rem; }
+  .mt-4 { margin-top: 2rem; }
+  
+  .mb-1 { margin-bottom: 0.5rem; }
+  .mb-2 { margin-bottom: 1rem; }
+  .mb-3 { margin-bottom: 1.5rem; }
+  .mb-4 { margin-bottom: 2rem; }
+  
+  .mx-auto { margin-left: auto; margin-right: auto; }
+  
+  .w-100 { width: 100%; }
+  .w-50 { width: 50%; }
+  
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+  
+  /* === Media Queries === */
+  @media (min-width: 576px) {
+    .course-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  }
+  
+  @media (min-width: 768px) {
+    /* Tablet and larger adjustments */
+    main {
+      padding: 2rem;
+      max-width: var(--container-max-width);
+      margin-bottom: 0; /* No fixed footer on desktop */
+    }
+    
+    .course-grid {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .course-detail-header {
+      flex-direction: row;
+      text-align: left;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    
+    .course-detail-header img {
+      max-width: 250px;
+    }
+    
+    .course-detail-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .rating-summary {
+      justify-content: flex-start;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    /* Desktop adjustments */
+    body {
+      background-color: var(--light-gray);
+    }
+    
+    .app-container {
+      max-width: var(--container-max-width);
+      margin: 0;
+      min-height: calc(100vh - 3rem);
+      border-radius: 0;
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+    }
+    
+    header {
+      border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    }
+    
+    .desktop-nav {
+      display: flex;
+    }
+    
+    .mobile-nav {
+      display: none;
+    }
+    
+    .mobile-only { display: none; }
+    .desktop-only { display: block; }
+    
+    .course-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .back-button {
+      display: none;
+    }
+    
+    /* Improved layout for forms on desktop */
+    .add-course-form,
+    .rating-form {
+      background-color: var(--white);
+      padding: 0;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    /* Two-column layout for reviews */
+    .reviews-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  
