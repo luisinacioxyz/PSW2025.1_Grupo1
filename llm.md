@@ -1,4 +1,4 @@
-##Cursos.html
+# Cursos.html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -91,7 +91,7 @@
 </html>
 
 
-##cursosespecificos.html
+# cursosespecificos.html
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -180,7 +180,9 @@
     </div>
 </body>
 </html>
-##avaliarcurso.html
+
+# avaliarcurso.html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -236,7 +238,9 @@
     </div>
 </body>
 </html>
-##adicionarlista.html
+
+# adicionarlista.html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -286,7 +290,9 @@
     </div>
 </body>
 </html>
-##style.css
+
+# style.css
+
 :root {
     --primary-color: #007bff; /* Example blue */
     --secondary-color: #6c757d; /* Example gray */
