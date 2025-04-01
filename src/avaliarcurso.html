@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CourseRank - Avaliar Curso</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-containeir">
+        <header>
+            <div class="header-content">
+                 <img src="https://via.placeholder.com/120x40.png?text=CourseRank" alt="CourseRank Logo" class="logo"> </div>
+
+            <nav class="desktop-nav">
+                <a href="cursos.html" class="active">Cursos</a>
+                <a href="#categorias">Categorias</a>
+                <a href="#plataformas">Plataformas</a>
+                <a href="minha_lista.html">Minha Lista</a>
+                <a href="#perfil">Perfil</a>
+            </nav>
+
+             </header>
+        <main>
+             <div class="course-info-simple">
+                 <h2>Python - Alura</h2>
+                 <p>Plataforma: Alura</p>
+             </div>
+
+             <form class="rating-form">
+                <label>Sua Avaliação:</label>
+                <div class="rating-input">
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+
+                <label for="review-text">Comentário (opcional):</label>
+                <textarea id="review-text" name="review-text" rows="6" placeholder="Escreva sua opinião sobre o curso..."></textarea>
+
+                <button type="submit" class="btn-primary">Enviar Avaliação</button>
+            </form>
+        </main>
+        <footer class="mobile-nav">
+            <button><i class="fas fa-home"></i></button>
+            <button><i class="fas fa-search"></i></button>
+            <button class="active"><i class="fas fa-list"></i></button>
+            <button><i class="fas fa-user"></i></button>
+        </footer>
+    </div>
+</body>
+</html>
