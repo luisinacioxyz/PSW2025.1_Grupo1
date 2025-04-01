@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-['Inter'] bg-gray-50 min-h-screen flex flex-col">
+    <header class="fixed top-0 left-0 right-0 flex items-center gap-3 p-4 border-b border-gray-200 z-50 bg-white">
+        <img src="img/logo.png" alt="Logo" class="w-10 h-10">
+        <a href="courses.html" class="text-base text-gray-600">Cursos</a>
+        <a href="list.html" class="text-base text-gray-600">Lista</a>
+        <a href="register_course.html" class="text-base text-gray-600">Cadastrar</a>
+        <a href="coupons.html" class="w-8 h-8"><img src="img/dinheiro.png" alt="Cupons"></a>
+        <a href="profile.html" class="w-8 h-8"><img src="img/mulher.png" alt="Perfil"></a>
+    </header> 
+    
+    <div class="h-18"></div>
+    
+    <main class="flex-1 flex flex-col items-center">  
+        <!-- Imagem --> 
+        <div class="relative mb-4 w-full">
+            <img src="img/python.webp" class="w-full h-50 object-cover">
+
+            <!-- Tag de Tecnologia -->
+            <span class="absolute top-2 left-2 p-1.5 bg-yellow-200 text-gray-600 text-sm rounded-md">
+                Tecnologia
+            </span>
+
+            <!-- Ícone de + -->
+            <a href="add_list.html" class="absolute top-2 right-2 p-1.5 bg-white rounded-full hover:bg-gray-50 transition-colors">
+                <svg class="w-5 h-5 text-gray-400 hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="w-full px-4">
+            <div class="flex items-center justify-between mb-1">
+                <h1 class="text-2xl text-gray-600 font-bold">Python</h1>
+                <button class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow">
+                    Avaliar
+                </button>
+            </div>
+
+            <p class="text-xl text-gray-600 mb-1">Alura</p>
+            
+            <!-- Média de avaliações -->
+            <div class="flex items-center gap-1 mb-1">
+                <span class="font-bold text-xl text-gray-600">5.0</span>
+                <svg class="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span class="text-sm text-gray-600">(128 avaliações)</span>
+            </div>
+
+            <!-- Link do Curso -->
+            <div class="mb-4">
+                <a href="https://exemplo.com/curso" 
+                target="_blank"
+                class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                    Ir para o curso →
+                </a>
+            </div>
+
+            <!-- Avaliações -->
+            <h2 class="mb-2.5 text-xl text-gray-600 font-bold">Avaliações</h2>
+            <div class="mb-8 gap-2.5 flex flex-col">
+                <!-- Avaliação 1 -->
+                <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-sm gap-1">
+                    <div class="flex items-center gap-1"> 
+                        <h3 class="text-lg text-gray-600 truncate">Felipe Mendes</h3>
+                        <span class="font-bold text-sm text-gray-600 pl-2">5.0</span>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                    </div>
+
+                    <p class="text-sm text-gray-600 italic">"Curso excelente! Explicações claras, bons exercícios e exemplos práticos que ajudam a fixar o conteúdo. Já consegui aplicar o que aprendi no meu dia a dia!"</p>
+                </div>
+
+                <!-- Avaliação 2 -->
+                <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-sm gap-1">
+                    <div class="flex items-center gap-1"> 
+                        <h3 class="text-lg text-gray-600 truncate">Clara Martins</h3>
+                        <span class="font-bold text-sm text-gray-600 pl-2">3.0</span>
+                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                    </div>
+
+                    <p class="text-sm text-gray-600 italic">"Gostei do curso, mas poderia ter mais projetos práticos e explicações mais detalhadas sobre listas e dicionários. No geral, foi uma ótima experiência!"</p>
+                </div>
+            </div>    
+        </div>     
+    </main>
+
+    <footer class="h-20 border-t border-gray-200 bg-white flex items-center justify-center gap-2">
+        <img src="img/logo.png" alt="Logo" class="w-15 h-15">
+        <p class="text-sm text-gray-600">CourseRank</p>
+    </footer>
+</body>
+</html>
+
+
+
+

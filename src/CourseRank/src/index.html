@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-['Inter'] bg-gray-50 min-h-screen flex flex-col">
+    <header class="fixed top-0 left-0 right-0 flex items-center gap-3 p-4 border-b border-gray-200 z-50 bg-white">
+        <img src="img/logo.png" alt="Logo" class="w-10 h-10">
+        <p class="text-base font-bold text-gray-600">Cursos</p>
+        <a href="list.html" class="text-base text-gray-600">Lista</a>
+        <a href="register_course.html" class="text-base text-gray-600">Cadastrar</a>
+        <a href="coupons.html" class="w-8 h-8"><img src="img/dinheiro.png" alt="Cupons"></a>
+        <a href="profile.html" class="w-8 h-8"><img src="img/mulher.png" alt="Perfil"></a>
+    </header> 
+    
+    <div class="mb-4 h-20"></div>
+    
+    <main class="flex-1 flex flex-col items-center px-4"> 
+        <!-- Campo de busca -->
+        <input type="search" 
+                class="truncate mb-2.5 w-3/4 text-sm placeholder:font-normal placeholder-gray-400 font-bold text-gray-600 p-2 border border-gray-300 rounded-md"
+                placeholder="🔍 Pesquise por um curso...">
+        
+        <!-- Filtros dropdown -->
+        <div class="mb-4 flex flex-wrap gap-3 justify-center items-center">
+            <!-- Categoria -->
+            <select class="truncate w-30 text-center text-sm font-normal text-gray-600 p-2 border border-gray-300 rounded-md"
+                    onchange="toggleFontWeight(this)">
+                <option value="" selected>Categoria</option>
+                <option value="programacao">Programação</option>
+                <option value="design">Design</option>
+                <option value="marketing">Marketing</option>
+                <option value="negocios">Negócios</option>
+            </select>
+
+            <!-- Plataforma -->
+            <select class="truncate w-30 text-center text-sm font-normal text-gray-600 p-2 border border-gray-300 rounded-md"
+                    onchange="toggleFontWeight(this)">
+                <option value="" selected>Plataforma</option>
+                <option value="udemy">Udemy</option>
+                <option value="coursera">Coursera</option>
+                <option value="alura">Alura</option>
+                <option value="rocketseat">Rocketseat</option>
+            </select>
+
+            <!-- Avaliação média -->
+            <div id="rating-filter" class="text-sm font-normal text-gray-600 p-2 gap-2 border border-gray-300 rounded-md flex items-center">
+                <span id="rating-title">Avaliação média:</span>
+                <input type="number" 
+                    min="1" 
+                    max="5" 
+                    step="0.5" 
+                    value="1"
+                    oninput="toggleRatingFilterWeight()"
+                    class="w-12 text-center p-1 border border-gray-300 rounded-md"
+                >
+                <span>até</span>
+                <input type="number" 
+                    min="1" 
+                    max="5" 
+                    step="0.5" 
+                    value="5"
+                    oninput="toggleRatingFilterWeight()"
+                    class="w-12 text-center p-1 border border-gray-300 rounded-md"
+                >
+            </div>
+        </div>         
+
+        <!-- Cursos -->
+        <div class="mb-8 gap-3 flex flex-wrap justify-center">
+            <!-- Curso 1 -->
+            <div class="w-70 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                <!-- Imagem e Favoritos -->
+                <div class="relative mb-4">
+                    <img src="img/css.png" class="w-full h-40 object-cover rounded-md">
+                    <a href="add_list.html" class="absolute top-2 right-2 p-1.5 bg-white rounded-full hover:bg-gray-50 transition-colors">
+                        <svg class="w-5 h-5 text-gray-400 hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                    </a>
+                </div>
+            
+                <!-- Informações do Curso -->
+                <h3 class="font-bold text-xl text-gray-600 truncate">CSS</h3>
+                <p class="text-sm text-gray-600 truncate">Hashtag Treinamentos</p>
+                
+                <!-- Avaliação -->
+                <div class="flex items-center gap-1">
+                    <span class="font-bold text-sm text-gray-600">5.0</span>
+                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"> <!-- TO-D0: Entender -->
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                </div>
+
+                <!-- Ver mais -->
+                <div class="flex justify-end">
+                    <a href="course.html" class="text-sm font-medium text-blue-600 hover:text-blue-800">Ver mais →</a>
+                </div>
+            </div>
+
+            <!-- Curso 2 -->
+            <div class="w-70 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                <!-- Imagem e Favoritos -->
+                <div class="relative mb-4">
+                    <img src="img/inteligencia_artificial.jpg" class="w-full h-40 object-cover rounded-md">
+                    <a href="add_list.html" class="absolute top-2 right-2 p-1.5 bg-white rounded-full hover:bg-gray-50 transition-colors">
+                        <svg class="w-5 h-5 text-gray-400 hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                    </a>
+                </div>
+            
+                <!-- Informações do Curso -->
+                <h3 class="font-bold text-xl text-gray-600 truncate">Inteligência Artificial</h3>
+                <p class="text-sm text-gray-600 truncate">DevMedia</p>
+                
+                <!-- Avaliação -->
+                <div class="flex items-center gap-1">
+                    <span class="font-bold text-sm text-gray-600">3.6</span>
+                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"> <!-- TO-D0: Entender -->
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                </div>
+
+                <!-- Ver mais -->
+                <div class="flex justify-end">
+                    <a href="course.html" class="text-sm font-medium text-blue-600 hover:text-blue-800">Ver mais →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="h-20 border-t border-gray-200 bg-white flex items-center justify-center gap-2">
+        <img src="img/logo.png" alt="Logo" class="w-15 h-15">
+        <p class="text-sm text-gray-600">CourseRank</p>
+    </footer>
+
+    <script>
+        // Filtros Categoria e Plataforma
+        function toggleFontWeight(select) {
+            if (select.value) {
+                select.classList.remove('font-normal');
+                select.classList.add('font-bold');
+            } else {
+                select.classList.remove('font-bold');
+                select.classList.add('font-normal');
+            }
+        }
+
+        // Filtro Avaliação média
+        function toggleRatingFilterWeight() {
+            // Select inputs by their order in the container
+            const container = document.getElementById('rating-filter');
+            const minInput = container.querySelector('input[type="number"]:first-of-type');
+            const maxInput = container.querySelector('input[type="number"]:last-of-type');
+            const title = document.querySelector('#rating-title');
+            
+            // Compare with default range (0-5)
+            if (Number(minInput.value) > 1 || Number(maxInput.value) < 5) {
+                title.classList.remove('font-normal');
+                title.classList.add('font-bold');
+            } else {
+                title.classList.remove('font-bold');
+                title.classList.add('font-normal');
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+

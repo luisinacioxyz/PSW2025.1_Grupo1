@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar a lista</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-['Inter'] bg-gray-50 min-h-screen flex flex-col">
+    <header class="fixed top-0 left-0 right-0 flex items-center gap-3 p-4 border-b border-gray-200 z-50 bg-white">
+        <img src="img/logo.png" alt="Logo" class="w-10 h-10">
+        <a href="courses.html" class="text-base text-gray-600">Cursos</a>
+        <a href="list.html" class="text-base text-gray-600">Lista</a>
+        <a href="register_course.html" class="text-base text-gray-600">Cadastrar</a>
+        <a href="coupons.html" class="w-8 h-8"><img src="img/dinheiro.png" alt="Cupons"></a>
+        <a href="profile.html" class="w-8 h-8"><img src="img/mulher.png" alt="Perfil"></a>
+    </header> 
+    
+    <div class="h-18"></div>
+    
+    <main class="flex-1 flex flex-col items-center">  
+        <!-- Imagem --> 
+        <div class="relative mb-4 w-full">
+            <img src="img/python.webp" class="w-full h-50 object-cover">
+
+            <!-- Tag de Tecnologia -->
+            <span class="absolute top-2 left-2 p-1.5 bg-yellow-200 text-gray-600 text-sm rounded-md">
+                Tecnologia
+            </span>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="mb-8 w-full px-4">
+            <h1 class="mb-1 text-2xl text-gray-600 font-bold">Adicionar à lista</h1>
+
+            <p class="mb-2.5 truncate text-xl text-gray-600">Python - Alura</p>
+            
+            <!-- Formulário de Datas -->
+            <form class="mb-8">
+                <!-- Data de Início -->
+                <div class="mb-2.5 flex flex-col">
+                    <label for="start-date" class="mb-1 text-lg text-gray-600">
+                        Data início
+                    </label>
+                    <input type="date" 
+                        id="start-date"
+                        name="start-date"
+                        required
+                        class="p-2 text-sm text-gray-600 border border-gray-300 rounded-md">
+                </div>
+
+                <!-- Data de Término -->
+                <div class="mb-4 flex flex-col">
+                    <label for="start-date" class="mb-1 text-lg text-gray-600">
+                        Data término
+                    </label>
+                    <input type="date" 
+                        id="start-date"
+                        name="start-date"
+                        required
+                        class="p-2 text-sm text-gray-600 border border-gray-300 rounded-md">
+                </div>
+
+                <!-- Botão -->
+                <div class="flex justify-end">
+                    <button type="submit" 
+                            class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow"> 
+                        Adicionar
+                    </button>
+                </div>
+            </form>
+        </div>     
+    </main>
+
+    <footer class="h-20 border-t border-gray-200 bg-white flex items-center justify-center gap-2">
+        <img src="img/logo.png" alt="Logo" class="w-15 h-15">
+        <p class="text-sm text-gray-600">CourseRank</p>
+    </footer>
+</body>
+</html>
+
+
+
+
