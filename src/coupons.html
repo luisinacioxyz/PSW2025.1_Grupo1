@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupons</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-['Inter'] bg-gray-50 min-h-screen flex flex-col">
+    <header class="p-4 gap-3 lg:gap-7 fixed top-0 left-0 right-0 flex items-center border-b border-gray-200 z-50 bg-white">
+        <img src="img/logo.png" alt="Logo" class="w-10 h-10">
+        <a href="courses.html" class="text-base text-gray-600">Cursos</a>
+        <a href="list.html" class="text-base text-gray-600">Lista</a>
+        <a href="register_course.html" class="text-base text-gray-600">Cadastrar</a>
+        <img src="img/dinheiro.png" alt="Cupons" class="w-8 h-8">
+        <a href="profile.html" class="w-8 h-8"><img src="img/mulher.png" alt="Perfil"></a>
+    </header> 
+    
+    <div class="mb-4 h-20"></div>
+    
+    <main class="flex-1 flex flex-col">
+        <!-- Título -->
+        <div class="mb-2.5 flex gap-2 items-center">
+            <img src="img/cupom.png" class="w-25 h-15">
+
+            <h1 class="text-2xl text-gray-600 font-bold">Cupons</h1>
+        </div>  
+        
+        <!-- Conteúdo -->
+        <div class="mb-8 w-full px-4 flex flex-col">
+            <p class="mb-4 text-sm text-gray-600 text-justify">A cada 5 avaliações concluídas, ganhe um cupom de desconto para plataformas de cursos na categoria que você já avaliou!</p>
+            
+            <div class="self-center flex items-center justify-center w-30 h-30 bg-black text-white text-4xl font-bold rounded-full shadow-sm">
+                16
+            </div>
+            <p class="self-center mb-4 text-lg text-gray-600">cursos avaliados</p>
+            
+              
+            <!-- Cupons -->
+            <div class="flex flex-col gap-2.5">
+                <h2 class="text-xl text-gray-600 font-bold">Seus cupons</h2>
+
+                <!-- Cupom 1 -->
+                <p class="text-sm text-gray-600">
+                    <span class="font-bold text-blue-500">PRIMEIRACOMPRA10</span> – 
+                    <span>10% de desconto na primeira compra de qualquer curso de programação.</span> 
+                    (<span class="font-bold">Udemy</span>)
+                    <br>
+                    <span class="font-bold">Expira em:</span> 
+                    <span>31 de maio de 2025</span>
+                </p>
+
+                <!-- Cupom 2 -->
+                <p class="text-sm text-gray-600">
+                    <span class="font-bold text-blue-500">PACOTEDEV20</span> – 
+                    <span>20% de desconto ao comprar 2 ou mais cursos de programação.</span> 
+                    (<span class="font-bold">Coursera</span>)
+                    <br>
+                    <span class="font-bold">Expira em:</span> 
+                    <span>30 de junho de 2025</span>
+                </p>
+            </div>
+        </div>     
+    </main>
+
+    <footer class="h-20 border-t border-gray-200 bg-white flex items-center justify-center gap-2">
+        <img src="img/logo.png" alt="Logo" class="w-15 h-15">
+        <p class="text-sm text-gray-600">CourseRank</p>
+    </footer>
+</body>
+</html>
+
+
+
+
