@@ -1,4 +1,34 @@
-// Salvar dados iniciais no localStorage
+// =======================
+// 🎯 EVENTOS
+// =======================
+
+document.getElementById('course-search').addEventListener('input', () => {
+    courseFilter.filterCourses();
+});
+
+document.getElementById('category-filter').addEventListener('change', (event) => {
+    changeFontWeight(event.target); // Passa o elemento select para a função changeFontWeight
+    courseFilter.filterCourses();
+});
+
+document.getElementById('platform-filter').addEventListener('change', (event) => {
+    changeFontWeight(event.target); // Passa o elemento select para a função changeFontWeight
+    courseFilter.filterCourses();
+});
+
+document.getElementById('rating-min').addEventListener('input', () => {
+    changeRatingFilterFontWeight(); 
+    courseFilter.filterCourses(); 
+});
+
+document.getElementById('rating-max').addEventListener('input', () => {
+    changeRatingFilterFontWeight(); 
+    courseFilter.filterCourses(); 
+});
+
+// =======================
+// 🧠 Inicialização do localStorage
+// =======================
 
 function saveDataToLocalStorage() {
     const categories = [
@@ -132,13 +162,9 @@ function saveDataToLocalStorage() {
         { id: "4", userId: "123", courseId: "1254" }
     ];
     
-    if (!localStorage.getItem("user")) {
-        localStorage.setItem("user", "123");
-    }
+    localStorage.setItem("user", "123");
 
-    if (!localStorage.getItem("courseTrackings")) {
-        localStorage.setItem("courseTrackings", JSON.stringify(courseTrackings));
-    }
+    localStorage.setItem("courseTrackings", JSON.stringify(courseTrackings));
 
     localStorage.setItem("courses", JSON.stringify(courses));
 
@@ -161,7 +187,11 @@ function loadDataFromLocalStorage() {
 
 const { categories, platforms, courses } = loadDataFromLocalStorage();
 
-// Filtro de categoria
+// =======================
+// 💡 FUNÇÕES
+// =======================
+
+// Criando filtro de categoria
 
 const categoryFilter = document.getElementById("category-filter");
 const defaultCategory = document.createElement("option");
@@ -176,7 +206,7 @@ categories.forEach(category => {
     categoryFilter.appendChild(option);
 });
 
-// Filtro de plataforma
+// Criando filtro de plataforma
 
 const platformFilter = document.getElementById("platform-filter");
 const defaultPlatform = document.createElement("option");
@@ -233,6 +263,7 @@ function renderCourses(courseList) {
         const card = document.createElement("div");
         card.className = "bg-white p-4 rounded-lg shadow-md w-72";
 
+        // Checando se o usuário tem aquele curso na lista
         const isTracked = courseTrackings.some(
             tracking => tracking.userId === userId && tracking.courseId === course.id
         );
@@ -248,7 +279,7 @@ function renderCourses(courseList) {
                         </svg>
                     </div>
                 ` : `
-                    <button onclick="openModal(${course.id})" class="plus-button p-1.5 absolute top-2 right-2 bg-white rounded-full hover:bg-gray-50 transition-colors">
+                    <button onclick="openAddCourseModal(${course.id})" class="plus-button p-1.5 absolute top-2 right-2 bg-white rounded-full hover:bg-gray-50 transition-colors">
                         <svg class="w-5 h-5 text-gray-400 hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
@@ -285,11 +316,6 @@ function getFilteredCourses() {
     const minRating = parseFloat(document.getElementById('rating-min').value) || 1;
     const maxRating = parseFloat(document.getElementById('rating-max').value) || 5;
 
-    console.log("categoryId:", categoryId);
-    console.log("platformId:", platformId);
-    console.log("minRating:", minRating);
-    console.log("maxRating:", maxRating);
-
     if (minRating > maxRating) {
         console.warn("minRating maior que maxRating");
         return [];
@@ -308,7 +334,7 @@ function getFilteredCourses() {
     return filtered;
 }
 
-const courseFilter = {     
+const courseFilter = {    
     timer: null,
   
     filterCourses() {
@@ -333,70 +359,49 @@ const courseFilter = {
     }    
 };
 
-// TO-DO: Modal de confirmação de adição à lista
+// Modais para adicionar curso à lista
 
-function addCourseTracking(courseId, userId) {
-    const courseTrackings = JSON.parse(localStorage.getItem('courseTrackings')) || [];
+function openAddCourseModal(courseId) {
+    const modal = document.getElementById('add-list-modal');
+    modal.classList.remove('hidden');
+
+    const confirmButton = document.getElementById('confirm-btn');
+    const cancelButton = document.getElementById('cancel-btn');
+
+    confirmButton.onclick = function () {
+        const courseTrackings = JSON.parse(localStorage.getItem("courseTrackings")) || [];
+        const userId = localStorage.getItem("user");
+
+        const newTracking = {
+            id: String(courseTrackings.length + 1),
+            userId: userId,
+            courseId: String(courseId)
+        };
     
-    const newCourse = {
-        id: String(courseTracking.length + 1),
-        userId: userId,  
-        courseId: courseId,
+        courseTrackings.push(newTracking);
+        localStorage.setItem("courseTrackings", JSON.stringify(courseTrackings));
+
+        closeModal();
+        showToast();
+        courseFilter.filterCourses(); 
     };
 
-    courseTrackings.push(newCourse);
-    localStorage.setItem('courseTrackings', JSON.stringify(courseTrackings));
-}
-
-function openModal(course) {
-    document.getElementById('add-list-modal').classList.remove('hidden');
+    cancelButton.onclick = closeModal;
 }
 
 function closeModal() {
-    document.getElementById('modal').classList.add('hidden');
+    document.getElementById('add-list-modal').classList.add('hidden');
 }
 
-function confirmAdd() {
-    if (selectedCourse) {
-        // Exemplo de adicionar à lista (caso use isso futuramente)
-        const lista = document.getElementById('lista-cursos');
-        if (lista) {
-            const item = document.createElement('li');
-            item.textContent = selectedCourse;
-            lista.appendChild(item);
-        }
-
-        closeModal();
-
-        // Mostra o aviso fixo
-        const toast = document.getElementById('toast');
-        toast.classList.remove('hidden');
-
-        // Esconde o aviso automaticamente após 2,5 segundos
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 2500);
-    }
-}
-
-function hideToastOnClick(e) {
+function showToast() {
     const toast = document.getElementById('toast');
-    const toastBox = toast.querySelector('div');
-    if (!toastBox.contains(e.target)) {
-        toast.classList.add('hidden');
-        window.location.href = 'index.html'; 
-    }
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 2000); 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const plusButtons = document.querySelectorAll('.plus-button');
-    plusButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(btn.getAttribute('data-course-id'));
-        });
-    });
 
-    document.getElementById('confirm-btn').addEventListener('click', confirmAdd);
-    document.getElementById('cancel-btn').addEventListener('click', closeModal);
-});
+
+
+
+
+
