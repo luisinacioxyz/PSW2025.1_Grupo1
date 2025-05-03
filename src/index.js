@@ -27,7 +27,7 @@ document.getElementById('rating-max').addEventListener('input', () => {
 });
 
 // =======================
-// 🧠 Inicialização do localStorage
+// 🧠 Inicialização de variáveis
 // =======================
 
 function saveDataToLocalStorage() {
@@ -60,8 +60,10 @@ function saveDataToLocalStorage() {
             platformName: "Hashtag Treinamentos",
             platformId: "123456", 
             avgRating: 5.0,
+            ratingsCount: 250,
             categoryName: "Programação",
-            categoryId: "123" 
+            categoryId: "123",
+            link: "https://hashtagtreinamentos.com/curso-css"
         },
         {
             id: "1234",
@@ -70,8 +72,10 @@ function saveDataToLocalStorage() {
             platformName: "DevMedia",
             platformId: "1234", 
             avgRating: 3.6,
+            ratingsCount: 340,
             categoryName: "Programação",
-            categoryId: "123"  
+            categoryId: "123",
+            link: "https://devmedia.com/curso-inteligencia-artificial"
         },
         {
             id: "1250",
@@ -80,8 +84,10 @@ function saveDataToLocalStorage() {
             platformName: "Alura",
             platformId: "12345",  
             avgRating: 4.7,
+            ratingsCount: 500,
             categoryName: "Programação",
-            categoryId: "123"  
+            categoryId: "123",
+            link: "https://alura.com.br/curso-introducao-javascript"
         },
         {
             id: "1251",
@@ -90,8 +96,10 @@ function saveDataToLocalStorage() {
             platformName: "Coursera",
             platformId: "5566",  
             avgRating: 4.3,
+            ratingsCount: 150,
             categoryName: "Design",
-            categoryId: "1234" 
+            categoryId: "1234",
+            link: "https://coursera.org/curso-ux-design-iniciantes"
         },
         {
             id: "1252",
@@ -100,8 +108,10 @@ function saveDataToLocalStorage() {
             platformName: "Hashtag Treinamentos",
             platformId: "123456", 
             avgRating: 4.9,
+            ratingsCount: 700,
             categoryName: "Produtividade",
-            categoryId: "789" 
+            categoryId: "789",
+            link: "https://hashtagtreinamentos.com/curso-excel-completo"
         },
         {
             id: "1253",
@@ -110,8 +120,10 @@ function saveDataToLocalStorage() {
             platformName: "DataCamp",
             platformId: "9988", 
             avgRating: 4.8,
+            ratingsCount: 850,
             categoryName: "Data Science",
-            categoryId: "321"
+            categoryId: "321",
+            link: "https://datacamp.com/curso-python-analise-dados"
         },
         {
             id: "1254",
@@ -120,8 +132,10 @@ function saveDataToLocalStorage() {
             platformName: "Udemy",
             platformId: "123",  
             avgRating: 4.5,
+            ratingsCount: 200,
             categoryName: "Design",
-            categoryId: "1234"  
+            categoryId: "1234",
+            link: "https://udemy.com/curso-figma-do-zero"
         },
         {
             id: "1255",
@@ -130,8 +144,10 @@ function saveDataToLocalStorage() {
             platformName: "Rocketseat",
             platformId: "7788", 
             avgRating: 4.6,
+            ratingsCount: 600,
             categoryName: "Programação",
-            categoryId: "123"  
+            categoryId: "123",
+            link: "https://rocketseat.com.br/curso-react-avancado"
         },
         {
             id: "1256",
@@ -140,8 +156,10 @@ function saveDataToLocalStorage() {
             platformName: "Coursera",
             platformId: "5566",
             avgRating: 4.2,
+            ratingsCount: 180,
             categoryName: "Gestão",
-            categoryId: "654"
+            categoryId: "654",
+            link: "https://coursera.org/curso-gestao-agil"
         },
         {
             id: "1257",
@@ -150,10 +168,12 @@ function saveDataToLocalStorage() {
             platformName: "edX",
             platformId: "4422",  
             avgRating: 4.4,
+            ratingsCount: 300,
             categoryName: "Data Science",
-            categoryId: "321"
+            categoryId: "321",
+            link: "https://edx.org/curso-introducao-machine-learning"
         }
-    ];
+    ];    
 
     const courseTrackings = [
         { id: "1", userId: "123", courseId: "1257" },
@@ -174,8 +194,6 @@ function saveDataToLocalStorage() {
 }
 
 saveDataToLocalStorage();
-
-// Recuperar dados do localStorage
 
 function loadDataFromLocalStorage() {
     const categories = JSON.parse(localStorage.getItem('categories')) || [];
