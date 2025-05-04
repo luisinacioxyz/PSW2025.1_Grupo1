@@ -177,20 +177,31 @@ function saveDataToLocalStorage() {
 
     const courseTrackings = [
         { id: "1", userId: "123", courseId: "1257" },
-        { id: "2", userId: "123", courseId: "1256" },
-        { id: "3", userId: "123", courseId: "1255" },
-        { id: "4", userId: "123", courseId: "1254" }
+        { id: "2", userId: "u1", courseId: "1256" },
+        { id: "3", userId: "u2", courseId: "1255" },
+        { id: "4", userId: "123", courseId: "1254" },
+        { id: "5", userId: "u4", courseId: "1253" },
+        { id: "6", userId: "u4", courseId: "1252" },
+        { id: "7", userId: "u5", courseId: "1251" },
+        { id: "8", userId: "u6", courseId: "1250" },
+        { id: "9", userId: "u7", courseId: "1234" },
+        { id: "10", userId: "123", courseId: "123" }
     ];
-    
-    localStorage.setItem("user", "123");
 
-    localStorage.setItem("courseTrackings", JSON.stringify(courseTrackings));
-
-    localStorage.setItem("courses", JSON.stringify(courses));
+    const user = {
+        id: "123",
+        name: "Carol"
+    };
 
     localStorage.setItem("categories", JSON.stringify(categories));
 
     localStorage.setItem("platforms", JSON.stringify(platforms));
+
+    localStorage.setItem("courses", JSON.stringify(courses));
+
+    localStorage.setItem("courseTrackings", JSON.stringify(courseTrackings));
+
+    localStorage.setItem("user", JSON.stringify(user));
 }
 
 saveDataToLocalStorage();
@@ -199,11 +210,13 @@ function loadDataFromLocalStorage() {
     const categories = JSON.parse(localStorage.getItem('categories')) || [];
     const platforms = JSON.parse(localStorage.getItem('platforms')) || [];
     const courses = JSON.parse(localStorage.getItem('courses')) || [];
+    const courseTrackings = JSON.parse(localStorage.getItem('courseTrackings')) || [];
+    const user = JSON.parse(localStorage.getItem('user')) || [];
 
-    return { categories, platforms, courses };
+    return { categories, platforms, courses, courseTrackings, user };
 }
 
-const { categories, platforms, courses } = loadDataFromLocalStorage();
+const { categories, platforms, courses, courseTrackings, user } = loadDataFromLocalStorage();
 
 // =======================
 // 💡 FUNÇÕES
@@ -274,16 +287,14 @@ function renderCourses(courseList) {
     const container = document.getElementById('courses-container');
     container.innerHTML = ''; 
 
-    const userId = localStorage.getItem("user");
     const courseTrackings = JSON.parse(localStorage.getItem("courseTrackings")) || [];
 
     courseList.forEach(course => {
         const card = document.createElement("div");
         card.className = "bg-white p-4 rounded-lg shadow-md w-72";
 
-        // Checando se o usuário tem aquele curso na lista
         const isTracked = courseTrackings.some(
-            tracking => tracking.userId === userId && tracking.courseId === course.id
+            tracking => tracking.userId === user.id && tracking.courseId === course.id
         );
 
         card.innerHTML = `
@@ -388,11 +399,10 @@ function openAddCourseModal(courseId) {
 
     confirmButton.onclick = function () {
         const courseTrackings = JSON.parse(localStorage.getItem("courseTrackings")) || [];
-        const userId = localStorage.getItem("user");
 
         const newTracking = {
             id: String(courseTrackings.length + 1),
-            userId: userId,
+            userId: user.id,
             courseId: String(courseId)
         };
     

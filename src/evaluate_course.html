@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
+<script src="evaluate_course.js" defer></script>
+
 <body class="font-['Inter'] bg-gray-50 min-h-screen flex flex-col">
     <header class="p-4 gap-3 lg:gap-7 fixed top-0 left-0 right-0 flex items-center border-b border-gray-200 z-50 bg-white">
         <img src="img/logo.png" alt="Logo" class="w-10 h-10">
@@ -23,19 +25,17 @@
     <main class="flex-1 flex flex-col items-center">  
         <!-- Imagem -->
         <div class="mb-4 relative w-full">
-            <img src="img/python.webp" class="w-full h-50 lg:h-70 object-cover">
+            <img id="course-image" src="" class="w-full h-50 lg:h-70 object-cover">
 
-            <!-- Tag de Tecnologia -->
-            <span class="p-1.5 absolute top-2 left-2 bg-yellow-200 text-sm text-gray-600 rounded-md">
-                Tecnologia
-            </span>
+            <!-- Categoria -->
+            <span id="course-tag" class="p-1.5 absolute top-2 left-2 bg-yellow-200 text-sm text-gray-600 rounded-md"></span>
         </div>
 
         <!-- Conteúdo -->
         <div class="mb-8 w-full px-4">
             <h1 class="mb-1 text-2xl text-gray-600 font-bold">Avaliar curso</h1>
 
-            <p class="mb-2.5 truncate text-xl text-gray-600">Introdução ao Python - DataCamp</p>
+            <p id="course-name" class="mb-2.5 truncate text-xl text-gray-600"></p>
             
             <!-- Formulário -->
             <form onsubmit="handleSubmit(event)" class="flex flex-col">
@@ -47,10 +47,10 @@
                     <button type="button" class="text-2xl text-gray-400 hover:text-yellow-400" onclick="setRating(4)">&#9733;</button>
                     <button type="button" class="text-2xl text-gray-400 hover:text-yellow-400" onclick="setRating(5)">&#9733;</button>
                 </div>
-                <input type="hidden" id="rating" name="rating" value="0" required>
+                <input type="hidden" id="rating" value="0" required>
 
                 <!-- Descrição -->
-                <textarea id="review" name="review" class="mb-4 w-full p-2 lg:w-1/2 text-sm text-gray-600 placeholder-gray-400 border border-gray-300 rounded-md" placeholder="Deixe um comentário..." required></textarea>
+                <textarea id="review" class="mb-4 w-full p-2 lg:w-1/2 text-sm text-gray-600 placeholder-gray-400 border border-gray-300 rounded-md" placeholder="Deixe um comentário..." required></textarea>
                 
                 <!-- Botão -->
                 <button type="submit" class="px-4 py-2 w-fit bg-blue-600 text-lg text-white rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow"> 
@@ -64,28 +64,6 @@
         <img src="img/logo.png" alt="Logo" class="w-15 h-15">
         <p class="text-sm text-gray-600">CourseRank</p>
     </footer>
-
-    <script>
-        function setRating(stars) {
-            document.getElementById('rating').value = stars;
-            const buttons = document.querySelectorAll('#stars button');
-            buttons.forEach((button, index) => {
-                button.classList.toggle('text-yellow-400', index < stars);
-                button.classList.toggle('text-gray-400', index >= stars);
-            });
-        }
-        
-        function handleSubmit(event) {
-            const rating = document.getElementById('rating').value;
-            const review = document.getElementById('review').value;
-
-            // Se o rating for 0 ou o comentário estiver vazio, impede o envio
-            if (rating == 0 || review.trim() === "") {
-                event.preventDefault();  
-                alert("Por favor, forneça uma avaliação e um comentário.");
-            }
-        }
-    </script>
 </body>
 </html>
 

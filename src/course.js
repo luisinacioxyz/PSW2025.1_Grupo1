@@ -7,79 +7,58 @@ function saveDataToLocalStorage() {
         {
             id: "r1",
             rating: 5,
-            comment: "Excelente curso! Aprendi muito sobre CSS.",
-            courseId: "123",
-            userName: "Ana Souza"
+            comment: "Conteúdo muito bem estruturado, aprendi bastante sobre machine learning!",
+            courseId: "1257",
+            userName: "Ana Souza",
+            userId: "123"
         },
         {
             id: "r2",
             rating: 4,
-            comment: "Muito bom, mas poderia ter mais exemplos práticos.",
-            courseId: "1251",
-            userName: "Carlos Lima"
+            comment: "Faltaram exemplos práticos, mas o conteúdo é bom.",
+            courseId: "1256",
+            userName: "Ana Souza",
+            userId: "u1"
         },
         {
             id: "r3",
-            rating: 3,
-            comment: "Esperava mais profundidade no conteúdo.",
-            courseId: "1234",
-            userName: "Juliana Castro"
+            rating: 5,
+            comment: "Desafios excelentes, ótimo para quem quer praticar lógica!",
+            courseId: "1255",
+            userName: "Carlos Lima",
+            userId: "u2"
         },
         {
             id: "r4",
-            rating: 5,
-            comment: "Simplesmente o melhor curso de Excel!",
-            courseId: "1252",
-            userName: "Marcos Pereira"
+            rating: 3,
+            comment: "Esperava mais interatividade nas aulas.",
+            courseId: "1254",
+            userName: "Juliana Castro",
+            userId: "123" // Corrigido para um userId válido para 1254
         },
         {
             id: "r5",
-            rating: 4,
-            comment: "Gostei muito da didática e dos desafios propostos.",
-            courseId: "1255",
-            userName: "Beatriz Fernandes"
+            rating: 5,
+            comment: "Curso completo e bem explicado!",
+            courseId: "1253",
+            userName: "Marcos Pereira",
+            userId: "u4"
         },
         {
             id: "r6",
-            rating: 2,
-            comment: "Achei o conteúdo muito básico para quem já conhece JavaScript.",
-            courseId: "1250",
-            userName: "Ricardo Matos"
+            rating: 4,
+            comment: "Didática excelente, voltarei para outros cursos.",
+            courseId: "1252",
+            userName: "Marcos Pereira",
+            userId: "u4"
         },
         {
             id: "r7",
-            rating: 5,
-            comment: "Excelente para quem está começando com Figma!",
-            courseId: "1254",
-            userName: "Lívia Gomes"
-        },
-        {
-            id: "r8",
-            rating: 4,
-            comment: "Curso muito completo e bem explicado.",
-            courseId: "1253", // Curso com duas avaliações
-            userName: "Felipe Alves"
-        },
-        {
-            id: "r9",
-            rating: 5,
-            comment: "O professor ensina de forma clara e objetiva. Muito bom!",
-            courseId: "1253", // Segunda avaliação do mesmo curso
-            userName: "Tatiane Rocha"
-        },
-        {
-            id: "r10",
-            rating: 3,
-            comment: "Bom conteúdo, mas senti falta de atividades práticas.",
-            courseId: "1256",
-            userName: "Vanessa Dias"
-        },
-        {
-            id: "r11",
-            rating: 5,
-            comment: "Explicações claras e ótimos exemplos de machine learning!",
-            courseId: "1257",
-            userName: "André Mendes"
+            rating: 2,
+            comment: "Muito básico para quem já tem experiência.",
+            courseId: "1250",
+            userName: "Ricardo Matos",
+            userId: "u6"
         }
     ];
 
@@ -90,13 +69,13 @@ saveDataToLocalStorage();
 
 function loadDataFromLocalStorage() {
     const courses = JSON.parse(localStorage.getItem('courses')) || [];
-
     const courseRatings = JSON.parse(localStorage.getItem('courseRatings')) || [];
+    const user = JSON.parse(localStorage.getItem('user')) || [];
 
-    return { courses, courseRatings };
+    return { courses, courseRatings, user };
 }
 
-const { courses, courseRatings } = loadDataFromLocalStorage();
+const { courses, courseRatings, user } = loadDataFromLocalStorage();
 
 const params = new URLSearchParams(window.location.search);
 const courseId = params.get('id');
@@ -124,10 +103,9 @@ function renderTrackingButton() {
     const listInteraction = document.getElementById('list-interaction');
 
     const courseTrackings = JSON.parse(localStorage.getItem("courseTrackings")) || [];
-    const userId = localStorage.getItem("user");
 
     const isTracked = courseTrackings.some(
-        tracking => tracking.userId === userId && tracking.courseId === courseId 
+        tracking => tracking.userId === user.id && tracking.courseId === courseId 
     );
 
     listInteraction.innerHTML = isTracked ? 
@@ -159,11 +137,10 @@ function openAddCourseModal(courseId) {
 
     confirmButton.onclick = function () {
         const courseTrackings = JSON.parse(localStorage.getItem("courseTrackings")) || [];
-        const userId = localStorage.getItem("user");
 
         const newTracking = {
             id: String(courseTrackings.length + 1),
-            userId: userId,
+            userId: user.id,
             courseId: String(courseId)
         };
     
@@ -192,8 +169,6 @@ function showToast() {
 
 document.getElementById('course-name').textContent = course.name;
 
-document.getElementById('evaluate-link').href = `evaluate_course.html?id=${courseId}`;
-
 document.getElementById('course-plataform').textContent = course.platformName;
 
 document.getElementById('avg-rating').textContent = course.avgRating.toFixed(1);
@@ -202,7 +177,36 @@ document.getElementById('ratings-count').textContent = `(${course.ratingsCount} 
 
 document.getElementById('course-link').href = course.link;
 
-// Avaliações
+// Campo de avaliação
+
+function renderRatingButton() {
+    const ratingField = document.getElementById('rating-field');
+
+    const courseRatings = JSON.parse(localStorage.getItem("courseRatings")) || [];
+
+    const isRated = courseRatings.some(
+        rating => rating.userId === user.id && rating.courseId === courseId 
+    );
+
+    ratingField.innerHTML = isRated ? 
+        `
+            <button class="px-4 py-2 w-fit bg-green-600 font-medium text-lg text-white rounded-lg hover:bg-green-700 shadow-sm transition-all hover:shadow"> 
+                Avaliar
+            </button>
+        ` : `
+            <button class="px-4 py-2 w-fit bg-blue-600 font-medium text-lg text-white rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow"> 
+                Avaliar
+            </button>
+        `;
+
+    if (!isRated) {
+        document.getElementById('rating-field').href = `evaluate_course.html?id=${courseId}`;
+    }
+}
+
+renderRatingButton();
+
+// Avaliações individualizadas
 
 const reviewsContainer = document.getElementById("reviews-container");
 
