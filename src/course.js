@@ -9,7 +9,7 @@ function saveDataToLocalStorage() {
             rating: 5,
             comment: "Conteúdo muito bem estruturado, aprendi bastante sobre machine learning!",
             courseId: "1257",
-            userName: "Ana Souza",
+            userName: "Carol",
             userId: "123"
         },
         {
@@ -33,8 +33,8 @@ function saveDataToLocalStorage() {
             rating: 3,
             comment: "Esperava mais interatividade nas aulas.",
             courseId: "1254",
-            userName: "Juliana Castro",
-            userId: "123" // Corrigido para um userId válido para 1254
+            userName: "Carol",
+            userId: "123" 
         },
         {
             id: "r5",
@@ -188,19 +188,14 @@ function renderRatingButton() {
         rating => rating.userId === user.id && rating.courseId === courseId 
     );
 
-    ratingField.innerHTML = isRated ? 
-        `
-            <button class="px-4 py-2 w-fit bg-green-600 font-medium text-lg text-white rounded-lg hover:bg-green-700 shadow-sm transition-all hover:shadow"> 
-                Avaliar
-            </button>
-        ` : `
-            <button class="px-4 py-2 w-fit bg-blue-600 font-medium text-lg text-white rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow"> 
-                Avaliar
-            </button>
-        `;
-
-    if (!isRated) {
-        document.getElementById('rating-field').href = `evaluate_course.html?id=${courseId}`;
+    if (isRated) {
+        ratingField.removeAttribute('href');
+        ratingField.innerHTML = 'Avaliado';
+        ratingField.className = 'px-4 py-2 w-fit bg-green-600 font-medium text-lg text-white rounded-lg shadow-sm cursor-default';
+    } else {
+        ratingField.href = `evaluate_course.html?id=${courseId}`;
+        ratingField.innerHTML = 'Avaliar';
+        ratingField.className = 'px-4 py-2 w-fit bg-blue-600 font-medium text-lg text-white rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow';
     }
 }
 
