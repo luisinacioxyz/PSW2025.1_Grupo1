@@ -1,0 +1,354 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "title": "Construa o nicho e identifique o problema - A facilidade do marketing orgânico",
+      "platform": "Alura",
+      "url": "https://www.alura.com.br/curso-marketing-organico",
+      "price": 49.99,
+      "description": "Aprenda a identificar nichos de mercado e criar estratégias eficientes de marketing orgânico para crescimento sustentável.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-marketing_114360-3903.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.7,
+      "totalRatings": 245
+    },
+    {
+      "id": "2",
+      "title": "A arte de educar - Construa o copywrite que o seu cliente não sabia que precisava ler",
+      "platform": "Domestika",
+      "url": "https://www.domestika.org/copywriting-arte",
+      "price": 39.99,
+      "description": "Domine a arte do copywriting educacional e aprenda a criar textos persuasivos que conectam e convertem.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/ilustracoes-ilustradas-de-clipart-promocional-de-marketing_52683-74351.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.8,
+      "totalRatings": 189
+    },
+    {
+      "id": "3",
+      "title": "Seja um especialista em SPIN Selling",
+      "platform": "Udemy",
+      "url": "https://www.udemy.com/spin-selling-expert",
+      "price": 89.99,
+      "description": "Aprenda a metodologia SPIN Selling e transforme sua abordagem de vendas com técnicas comprovadas.",
+      "imageUrl": "https://img.freepik.com/vetores-premium/conceito-de-troca-de-moeda-mulher-troca-notas-de-dolar-em-dinheiro-por-moedas-de-euro-setas-sinais-de-negociacao-servico-bancario-de-transacoes-financeiras-ilustracao-vetorial-isolada-plana-sem-fundo-branco_633472-4018.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.9,
+      "totalRatings": 312
+    },
+    {
+      "id": "4",
+      "title": "Torne-se o SDR que toda equipe de vendas precisa!",
+      "platform": "Coursera",
+      "url": "https://www.coursera.org/sdr-specialist",
+      "price": 79.99,
+      "description": "Desenvolva as habilidades essenciais para se tornar um SDR de alto desempenho e impulsionar resultados de vendas.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/lider-empresarial-apresentando-o-diagrama-de-crescimento-ao-colega_74855-2331.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.6,
+      "totalRatings": 178
+    },
+    {
+      "id": "5",
+      "title": "PMBOK - Aplique no seu dia a dia",
+      "platform": "Coursera",
+      "url": "https://www.coursera.org/pmbok-practical",
+      "price": 129.99,
+      "description": "Aplique os princípios do PMBOK em projetos reais e aprenda a gerenciar projetos com eficiência.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/conceito-de-planejamento-de-negocios-desenhado-a-mao_52683-75727.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.8,
+      "totalRatings": 423
+    },
+    {
+      "id": "6",
+      "title": "Como destravar a sua criatividade",
+      "platform": "Domestika",
+      "url": "https://www.domestika.org/unlock-creativity",
+      "price": 34.99,
+      "description": "Descubra técnicas práticas para desbloquear seu potencial criativo e gerar ideias inovadoras.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/ilustracao-de-recrutamento-remoto-desenhada-a-mao_23-2150968213.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.7,
+      "totalRatings": 256
+    },
+    {
+      "id": "7",
+      "title": "Inicie sua carreira de Design",
+      "platform": "Alura",
+      "url": "https://www.alura.com.br/design-career",
+      "price": 59.99,
+      "description": "Comece sua jornada no design com fundamentos sólidos e projetos práticos para construir seu portfólio.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-da-menina-designer_114360-4455.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.6,
+      "totalRatings": 289
+    },
+    {
+      "id": "8",
+      "title": "Desmistificando Planilhas - Excel",
+      "platform": "Udemy",
+      "url": "https://www.udemy.com/excel-mastery",
+      "price": 44.99,
+      "description": "Domine o Excel do básico ao avançado com foco em análise de dados e automação de tarefas.",
+      "imageUrl": "https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-planilhas_114360-736.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.8,
+      "totalRatings": 567
+    },
+    {
+      "id": "9",
+      "title": "Dashboards Inteligente com IA",
+      "platform": "Coursera",
+      "url": "https://www.coursera.org/ai-dashboards",
+      "price": 99.99,
+      "description": "Crie dashboards avançados utilizando inteligência artificial para análise de dados mais eficiente.",
+      "imageUrl": "https://img.freepik.com/vetores-premium/automacao-de-processos-de-negocios-ilustracoes-de-vetores-de-desenho-animado-isolados-inteligencia-artificial-em_107173-97261.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.9,
+      "totalRatings": 234
+    },
+    {
+      "id": "10",
+      "title": "Automaçaõ e análise de dados - Python",
+      "platform": "Alura",
+      "url": "https://www.alura.com.br/python-data",
+      "price": 69.99,
+      "description": "Aprenda Python para automatizar tarefas e realizar análises de dados complexas com eficiência.",
+      "imageUrl": "https://img.freepik.com/vetores-premium/ilustracao-vetorial-de-codificacao-de-python-bonita-no-laptop_831490-6966.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.7,
+      "totalRatings": 445
+    },
+    {
+      "id": "11",
+      "title": "Desenvolvimento Web - Iniciante",
+      "platform": "Udemy",
+      "url": "https://www.udemy.com/web-dev-beginner",
+      "price": 54.99,
+      "description": "Inicie sua jornada no desenvolvimento web com HTML, CSS e JavaScript de forma prática.",
+      "imageUrl": "https://img.freepik.com/vetores-premium/ilustracao-em-vetor-conceito-abstrato-de-habilidades-avancadas-de-informatica_107173-33497.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.6,
+      "totalRatings": 678
+    },
+    {
+      "id": "12",
+      "title": "Dev Ops - Do zero ao Avançado",
+      "platform": "Coursera",
+      "url": "https://www.coursera.org/devops-complete",
+      "price": 149.99,
+      "description": "Masterize DevOps com um curso completo que abrange desde os fundamentos até práticas avançadas.",
+      "imageUrl": "https://img.freepik.com/vetores-premium/conceito-de-desenvolvimento-em-design-plano-moderno-para-web-desenvolvedor-de-programacao-de-software-de-monitoramento-engenheiros-de-devops-comunicacao-de-projeto-ilustracao-vetorial-para-material-de-marketing-de-banner-de-midia-social_9209-16146.jpg?ga=GA1.1.2083810456.1747016003&semt=ais_hybrid&w=740",
+      "rating": 4.9,
+      "totalRatings": 389
+    }
+  ],
+  "ratings": [
+    {
+      "id": "1",
+      "courseId": "1",
+      "userId": "user1",
+      "rating": 5,
+      "review": "Excelente curso para entender marketing orgânico! Metodologia clara e resultados práticos.",
+      "createdAt": "2024-03-15T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "courseId": "2",
+      "userId": "user2",
+      "rating": 5,
+      "review": "Transformou completamente minha forma de escrever copy. Resultados impressionantes!",
+      "createdAt": "2024-03-16T15:30:00Z"
+    },
+    {
+      "id": "3",
+      "courseId": "3",
+      "userId": "user3",
+      "rating": 5,
+      "review": "SPIN Selling explicado de forma magistral. Já estou aplicando e vendo resultados.",
+      "createdAt": "2024-03-17T09:45:00Z"
+    },
+    {
+      "id": "4",
+      "courseId": "4",
+      "userId": "user4",
+      "rating": 4,
+      "review": "Ótimo conteúdo para SDRs iniciantes. Práticas muito úteis para o dia a dia.",
+      "createdAt": "2024-03-18T14:20:00Z"
+    },
+    {
+      "id": "5",
+      "courseId": "5",
+      "userId": "user5",
+      "rating": 5,
+      "review": "Finalmente entendi como aplicar PMBOK na prática. Material excelente!",
+      "createdAt": "2024-03-19T11:15:00Z"
+    },
+    {
+      "id": "6",
+      "courseId": "6",
+      "userId": "user6",
+      "rating": 5,
+      "review": "As técnicas de criatividade são fantásticas. Sinto-me muito mais confiante agora.",
+      "createdAt": "2024-03-20T16:40:00Z"
+    },
+    {
+      "id": "7",
+      "courseId": "7",
+      "userId": "user7",
+      "rating": 4,
+      "review": "Ótimo curso para iniciantes em design. Projetos práticos muito bem estruturados.",
+      "createdAt": "2024-03-21T13:25:00Z"
+    },
+    {
+      "id": "8",
+      "courseId": "8",
+      "userId": "user8",
+      "rating": 5,
+      "review": "Excel explicado de forma clara e objetiva. Aprendi muito sobre fórmulas avançadas.",
+      "createdAt": "2024-03-22T10:50:00Z"
+    },
+    {
+      "id": "9",
+      "courseId": "9",
+      "userId": "user9",
+      "rating": 5,
+      "review": "Incrível como a IA pode melhorar nossos dashboards. Curso muito atual e relevante.",
+      "createdAt": "2024-03-23T15:15:00Z"
+    },
+    {
+      "id": "10",
+      "courseId": "10",
+      "userId": "user10",
+      "rating": 5,
+      "review": "Python para análise de dados explicado de forma excepcional. Projetos práticos excelentes.",
+      "createdAt": "2024-03-24T12:30:00Z"
+    },
+    {
+      "id": "11",
+      "courseId": "11",
+      "userId": "user11",
+      "rating": 4,
+      "review": "Ótimo curso para iniciar no desenvolvimento web. Conteúdo muito bem estruturado.",
+      "createdAt": "2024-03-25T09:45:00Z"
+    },
+    {
+      "id": "12",
+      "courseId": "12",
+      "userId": "user12",
+      "rating": 5,
+      "review": "O melhor curso de DevOps que já fiz. Cobertura completa de todas as ferramentas importantes.",
+      "createdAt": "2024-03-26T14:20:00Z"
+    },
+    {
+      "id": "a513",
+      "courseId": "1",
+      "userId": "user_1747016919317",
+      "rating": 3,
+      "review": "Curso ok para iniciar no tópico",
+      "createdAt": "2025-05-12T03:03:26.787Z"
+    }
+  ],
+  "coupons": [
+    {
+      "id": "1",
+      "userId": "user1",
+      "courseId": "1",
+      "code": "PYTHON20",
+      "discount": 20,
+      "expiresAt": "2024-12-31T23:59:59Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user1",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "createdAt": "2024-03-15T10:00:00Z"
+    },
+    {
+      "id": "user2",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "createdAt": "2024-03-16T15:30:00Z"
+    },
+    {
+      "id": "user3",
+      "name": "Mike Johnson",
+      "email": "mike@example.com",
+      "createdAt": "2024-03-17T09:45:00Z"
+    },
+    {
+      "id": "user4",
+      "name": "Sarah Wilson",
+      "email": "sarah@example.com",
+      "createdAt": "2024-03-18T14:20:00Z"
+    },
+    {
+      "id": "user5",
+      "name": "David Brown",
+      "email": "david@example.com",
+      "createdAt": "2024-03-19T11:15:00Z"
+    },
+    {
+      "id": "user6",
+      "name": "Emily Davis",
+      "email": "emily@example.com",
+      "createdAt": "2024-03-20T16:40:00Z"
+    },
+    {
+      "id": "user7",
+      "name": "Chris Taylor",
+      "email": "chris@example.com",
+      "createdAt": "2024-03-21T13:25:00Z"
+    },
+    {
+      "id": "user8",
+      "name": "Lisa Anderson",
+      "email": "lisa@example.com",
+      "createdAt": "2024-03-22T10:50:00Z"
+    },
+    {
+      "id": "user9",
+      "name": "Tom Wilson",
+      "email": "tom@example.com",
+      "createdAt": "2024-03-23T15:15:00Z"
+    },
+    {
+      "id": "user10",
+      "name": "Anna Martinez",
+      "email": "anna@example.com",
+      "createdAt": "2024-03-24T12:30:00Z"
+    },
+    {
+      "id": "user11",
+      "name": "Peter Lee",
+      "email": "peter@example.com",
+      "createdAt": "2024-03-25T09:45:00Z"
+    },
+    {
+      "id": "user12",
+      "name": "Rachel Green",
+      "email": "rachel@example.com",
+      "createdAt": "2024-03-26T14:20:00Z"
+    }
+  ],
+  "userLists": [
+    {
+      "id": "4e65",
+      "userId": "user_1746944499786",
+      "courseIds": [],
+      "createdAt": "2025-05-11T06:24:49.409Z"
+    },
+    {
+      "id": "f435",
+      "userId": "user_1746944499786",
+      "courseIds": [],
+      "createdAt": "2025-05-11T06:24:49.491Z"
+    },
+    {
+      "id": "77f0",
+      "userId": "user_1746944718615",
+      "courseIds": [],
+      "createdAt": "2025-05-11T06:25:18.797Z"
+    },
+    {
+      "id": "c7cd",
+      "userId": "user_1747016919317",
+      "courseIds": [
+        "1"
+      ],
+      "createdAt": "2025-05-12T02:28:39.566Z"
+    }
+  ]
+}
