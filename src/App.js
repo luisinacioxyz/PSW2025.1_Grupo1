@@ -9,6 +9,7 @@ import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
 import Login from './components/Login';
+import RatingList from './components/RatingList';
 import CouponList from './components/CouponList';
 import MyList from './components/MyList';
 import Footer from './components/Footer';
@@ -78,6 +79,12 @@ function App() {
                       Minha Lista
                     </Link>
                     <Link
+                      to="/ratings"
+                      className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
+                    >
+                      Minhas Avaliações
+                    </Link>
+                    <Link
                       to="/my-coupons"
                       className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
                     >
@@ -116,6 +123,7 @@ function App() {
             <Route path="/courses/create" element={<CreateCourse />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/ratings" element={<RatingList />} />
             <Route path="/my-coupons" element={<CouponList />} />
             <Route path="/my-list" element={<MyList />} />
           </Routes>
