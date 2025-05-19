@@ -6,17 +6,21 @@ const initialState = {
   error: null,
 };
 
-// 1) Busca todas as avaliações de um usuário
+
 export const fetchRatings = createAsyncThunk(
   'ratings/fetchRatings',
-  async (userId) => {
-    const res = await fetch(`http://localhost:3001/ratings?userId=${userId}`);
-    if (!res.ok) throw new Error('Erro ao buscar avaliações');
-    return await res.json();
+  async (courseId) => {
+    const response = await fetch(`http://localhost:3001/ratings?courseId=${courseId}`);
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Falha ao buscar avaliações');
+    }
+    
+    return response.json();
   }
 );
 
-// 2) Adiciona uma avaliação nova
 export const addRating = createAsyncThunk(
   'ratings/addRating',
   async ({ courseId, userId, rating, review }) => {
@@ -37,7 +41,6 @@ export const addRating = createAsyncThunk(
   }
 );
 
-// 3) Atualiza uma avaliação existente
 export const updateRating = createAsyncThunk(
   'ratings/updateRating',
   async ({ id, courseId, userId, rating, review, createdAt }) => {
@@ -52,7 +55,6 @@ export const updateRating = createAsyncThunk(
   }
 );
 
-// 4) Deleta uma avaliação pelo ID
 export const deleteRating = createAsyncThunk(
   'ratings/deleteRating',
   async (id) => {
@@ -70,7 +72,6 @@ const ratingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // fetchRatings
       .addCase(fetchRatings.pending, (state) => {
         state.status = 'loading';
       })
@@ -84,18 +85,15 @@ const ratingSlice = createSlice({
         state.error = action.error.message || 'Falha ao buscar avaliações';
       })
 
-      // addRating
       .addCase(addRating.fulfilled, (state, action) => {
         state.ratings.push(action.payload);
       })
 
-      // updateRating
       .addCase(updateRating.fulfilled, (state, action) => {
         const idx = state.ratings.findIndex(r => r.id === action.payload.id);
         if (idx !== -1) state.ratings[idx] = action.payload;
       })
 
-      // deleteRating
       .addCase(deleteRating.fulfilled, (state, action) => {
         state.ratings = state.ratings.filter(r => r.id !== action.payload);
       });

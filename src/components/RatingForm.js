@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const RatingForm = ({ onSubmit, onCancel }) => {
   const [rating, setRating] = useState(5);

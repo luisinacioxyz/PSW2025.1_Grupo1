@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRatings, deleteRating } from '../store/ratingSlice';
 import { addCoupon, fetchCoupons } from '../store/couponSlice';
@@ -9,22 +9,25 @@ const RatingList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { ratings, status, error } = useSelector(state => state.ratings);
-  const { coupons } = useSelector(state => state.coupons);
+  const { ratings: allRatings, status, error } = useSelector(state => state.ratings);
+
   const courses = useSelector(state => state.courses.courses);
   const user = useSelector(state => state.user.currentUser);
 
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [userRatings, setUserRatings] = useState([]);
+
+  useEffect(() => {
+    if (user && allRatings.length > 0) {
+      const filtered = allRatings.filter(r => r.userId === user.id);
+      setUserRatings(filtered);
+    }
+  }, [allRatings, user]);
 
   const getCourseTitle = id => {
     const found = courses.find(c => c.id === id);
     return found ? found.title : 'Curso Desconhecido';
-  };
-
-  const getCoursePrice = id => {
-    const found = courses.find(c => c.id === id);
-    return found && typeof found.price === 'number' ? found.price : 0;
   };
 
   useEffect(() => {
@@ -32,17 +35,26 @@ const RatingList = () => {
       navigate('/login');
       return;
     }
-    setIsLoading(true);
-    dispatch(fetchRatings(user.id))
-      .unwrap()
-      .finally(() => setIsLoading(false));
-    dispatch(fetchCoupons(user.id));
+    
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(fetchRatings()).unwrap();
+        dispatch(fetchCoupons(user.id));
+      } catch (err) {
+        console.error('Erro ao carregar:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, [dispatch, navigate, user]);
 
   const handleDelete = async id => {
     try {
       await dispatch(deleteRating(id)).unwrap();
-      dispatch(fetchRatings(user.id));
+      await dispatch(fetchRatings()).unwrap();
     } catch (err) {
       console.error('Falha ao excluir avaliação', err);
       alert('Falha ao excluir avaliação');
@@ -50,24 +62,24 @@ const RatingList = () => {
   };
 
   const handleAddSuccess = async () => {
-    const updated = await dispatch(fetchRatings(user.id)).unwrap();
-    if (updated.length > 0 && updated.length % 5 === 0) {
-      const code = `PROMO10-${Date.now().toString().slice(-5)}`;
-      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-      const couponPayload = {
-        userId: user.id,
-        courseId: null,
-        code,
-        discount: 10,
-        expiresAt
-      };
-      try {
+    try {
+      await dispatch(fetchRatings()).unwrap();
+      
+      const currentUserRatings = userRatings.length;
+      if ((currentUserRatings + 1) % 5 === 0) {
+        const code = `PROMO10-${Date.now().toString().slice(-5)}`;
+        const couponPayload = {
+          userId: user.id,
+          code,
+          discount: 10,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        };
         await dispatch(addCoupon(couponPayload)).unwrap();
         dispatch(fetchCoupons(user.id));
         alert('🎉 Parabéns! Você ganhou um cupom de 10%');
-      } catch (err) {
-        console.error('Falha ao criar cupom automático', err);
       }
+    } catch (err) {
+      console.error('Erro ao atualizar:', err);
     }
   };
 
@@ -91,12 +103,16 @@ const RatingList = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Cabeçalho */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Suas Avaliações</h1>
+        <button
+          onClick={() => setShowForm(true)}
+          className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+        >
+          Nova Avaliação
+        </button>
       </div>
 
-      {/* Modal de Nova Avaliação */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="max-w-md w-full">
@@ -111,8 +127,7 @@ const RatingList = () => {
         </div>
       )}
 
-      {/* Lista de Avaliações */}
-      {ratings.length === 0 ? (
+      {userRatings.length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <h3 className="mt-2 text-lg font-medium text-gray-900">
             Nenhuma avaliação encontrada
@@ -123,42 +138,41 @@ const RatingList = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ratings.map(r => {
-            const price = getCoursePrice(r.courseId);
-            return (
-              <div
-                key={r.id}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
-              >
-                <h2 className="text-xl font-semibold mb-2 text-gray-800">
-                  {getCourseTitle(r.courseId)}
-                </h2>
-                <p className="mb-2">
-                  Nota: <strong>{r.rating}</strong>
-                </p>
-                {r.review && (
-                  <p className="mb-4 text-gray-700">"{r.review}"</p>
-                )}
+          {userRatings.map(r => (
+            <div
+              key={r.id}
+              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
+            >
+              <h2 className="text-xl font-semibold mb-2 text-gray-800">
+                {getCourseTitle(r.courseId)}
+              </h2>
+              <div className="mb-2">
+                <span className="text-yellow-400">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i}>
+                      {i < r.rating ? '★' : '☆'}
+                    </span>
+                  ))}
+                </span>
+              </div>
+              {r.review && (
+                <p className="mb-4 text-gray-700 italic">"{r.review}"</p>
+              )}
+              <div className="flex justify-between items-center">
                 <small className="text-gray-500">
-                  Avaliado em {new Date(r.createdAt).toLocaleDateString()}
+                  {new Date(r.createdAt).toLocaleDateString()}
                 </small>
-
-                {/* Detalhes e preço */}
-                <div className="px-4 pb-4 flex justify-between items-center">
-                  <span className="text-purple-600 font-bold text-xl">
-                  </span>
-                  <div className="flex space-x-2">
-                    <Link
-                      to={`/courses/${r.courseId}`}
-                      className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
-                    >
-                      Detalhes
-                    </Link>
-                  </div>
+                <div className="space-x-2">
+                  <Link
+                    to={`/courses/${r.courseId}`}
+                    className="text-purple-600 hover:text-purple-800 text-sm"
+                  >
+                    Ver Curso
+                  </Link>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       )}
     </div>
