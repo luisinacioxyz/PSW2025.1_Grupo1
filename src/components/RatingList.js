@@ -8,37 +8,29 @@ import RatingForm from './RatingForm';
 const RatingList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { ratings: allRatings, status, error } = useSelector(state => state.ratings);
-
   const courses = useSelector(state => state.courses.courses);
   const user = useSelector(state => state.user.currentUser);
-
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [userRatings, setUserRatings] = useState([]);
 
   useEffect(() => {
     if (user && allRatings.length > 0) {
-      const filtered = allRatings.filter(r => r.userId === user.id);
-      setUserRatings(filtered);
+      setUserRatings(allRatings.filter(r => r.userId === user.id));
     }
   }, [allRatings, user]);
-
-  const getCourseTitle = id => {
-    const found = courses.find(c => c.id === id);
-    return found ? found.title : 'Curso Desconhecido';
-  };
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
       return;
     }
-    
+
     const loadData = async () => {
       setIsLoading(true);
       try {
+        // Ajuste: fetchRatings agora busca todas as avaliações
         await dispatch(fetchRatings()).unwrap();
         dispatch(fetchCoupons(user.id));
       } catch (err) {
@@ -64,15 +56,14 @@ const RatingList = () => {
   const handleAddSuccess = async () => {
     try {
       await dispatch(fetchRatings()).unwrap();
-      
-      const currentUserRatings = userRatings.length;
-      if ((currentUserRatings + 1) % 5 === 0) {
+      const currentCount = userRatings.length;
+      if ((currentCount + 1) % 5 === 0) {
         const code = `PROMO10-${Date.now().toString().slice(-5)}`;
         const couponPayload = {
           userId: user.id,
           code,
           discount: 10,
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         };
         await dispatch(addCoupon(couponPayload)).unwrap();
         dispatch(fetchCoupons(user.id));
@@ -103,7 +94,6 @@ const RatingList = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="max-w-md w-full">
@@ -135,32 +125,26 @@ const RatingList = () => {
               className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
             >
               <h2 className="text-xl font-semibold mb-2 text-gray-800">
-                {getCourseTitle(r.courseId)}
+                {courses.find(c => c.id === r.courseId)?.title || 'Curso Desconhecido'}
               </h2>
               <div className="mb-2">
                 <span className="text-yellow-400">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i}>
-                      {i < r.rating ? '★' : '☆'}
-                    </span>
+                    <span key={i}>{i < r.rating ? '★' : '☆'}</span>
                   ))}
                 </span>
               </div>
-              {r.review && (
-                <p className="mb-4 text-gray-700 italic">"{r.review}"</p>
-              )}
+              {r.review && <p className="mb-4 text-gray-700 italic">"{r.review}"</p>}
               <div className="flex justify-between items-center">
                 <small className="text-gray-500">
                   {new Date(r.createdAt).toLocaleDateString()}
                 </small>
-                <div className="space-x-2">
-                  <Link
-                    to={`/courses/${r.courseId}`}
-                    className="text-purple-600 hover:text-purple-800 text-sm"
-                  >
-                    Ver Curso
-                  </Link>
-                </div>
+                <Link
+                  to={`/courses/${r.courseId}`}
+                  className="text-purple-600 hover:text-purple-800 text-sm"
+                >
+                  Ver Curso
+                </Link>
               </div>
             </div>
           ))}
