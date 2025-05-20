@@ -77,28 +77,28 @@ function App() {
         <>
           <Link
             to="/my-list"
-            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
+            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md xl:whitespace-nowrap text-center"
             onClick={() => setIsMenuOpen(false)}
           >
             Minha Lista
           </Link>
           <Link
             to="/ratings"
-            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
+            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md xl:whitespace-nowrap text-center"
             onClick={() => setIsMenuOpen(false)}
           >
             Minhas Avaliações
           </Link>
           <Link
             to="/my-coupons"
-            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
+            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md xl:whitespace-nowrap text-center"
             onClick={() => setIsMenuOpen(false)}
           >
             Meus Cupons
           </Link>
           <Link
             to="/courses/create"
-            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
+            className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md xl:whitespace-nowrap text-center"
             onClick={() => setIsMenuOpen(false)}
           >
             Adicionar Curso
@@ -127,7 +127,7 @@ function App() {
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <nav className="bg-white shadow-lg relative z-50">
           <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex justify-between items-center h-16 gap-10">
               <Link to="/" className="text-2xl font-bold text-purple-600">
                 CourseRank
               </Link>

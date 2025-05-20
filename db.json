@@ -515,7 +515,9 @@
     {
       "id": "c7cd",
       "userId": "user_1747016919317",
-      "courseIds": ["1"],
+      "courseIds": [
+        "1"
+      ],
       "createdAt": "2025-05-12T02:28:39.566Z"
     },
     {
@@ -533,7 +535,9 @@
     {
       "id": "f548",
       "userId": "user_1747749654168",
-      "courseIds": ["3"],
+      "courseIds": [
+        "3"
+      ],
       "createdAt": "2025-05-20T14:06:19.527Z"
     },
     {
@@ -553,6 +557,18 @@
       "userId": "user_1747750979409",
       "courseIds": [],
       "createdAt": "2025-05-20T14:27:47.805Z"
+    },
+    {
+      "id": "cf40",
+      "userId": "user_1747764972700",
+      "courseIds": [],
+      "createdAt": "2025-05-20T18:42:34.503Z"
+    },
+    {
+      "id": "542c",
+      "userId": "user_1747764972700",
+      "courseIds": [],
+      "createdAt": "2025-05-20T18:42:34.518Z"
     }
   ],
   "processedRatings": [
@@ -560,7 +576,11 @@
       "id": "1",
       "userId": "user1",
       "platform": "Udemy",
-      "ratingIds": ["1", "3", "8"],
+      "ratingIds": [
+        "1",
+        "3",
+        "8"
+      ],
       "createdAt": "2024-05-20T14:00:00Z",
       "updatedAt": "2024-05-20T14:00:00Z"
     },
@@ -568,7 +588,11 @@
       "id": "8c06",
       "userId": "user_1747751971579",
       "platform": "Coursera",
-      "ratingIds": ["3d59", "9039", "b3f5"],
+      "ratingIds": [
+        "3d59",
+        "9039",
+        "b3f5"
+      ],
       "createdAt": "2025-05-20T14:41:58.580Z",
       "updatedAt": "2025-05-20T14:41:58.580Z"
     }
