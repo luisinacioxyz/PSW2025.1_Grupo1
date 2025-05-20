@@ -1,11 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import homepageImage from '../imgs/homepage.png';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import homepageImage from "../imgs/homepage.png";
 
 const HomePage = () => {
   const { courses } = useSelector((state) => state.courses);
-  
+  const { currentUser } = useSelector((state) => state.user);
+
   // Get 3 featured courses (highest rated)
   const featuredCourses = [...courses]
     .sort((a, b) => b.rating - a.rating)
@@ -22,7 +23,8 @@ const HomePage = () => {
                 Encontre os Melhores Cursos Online para Sua Carreira
               </h1>
               <p className="text-lg md:text-xl mb-8 opacity-90">
-                Compare, avalie e descubra cursos bem avaliados de plataformas como Udemy, Coursera, Alura e Domestika.
+                Compare, avalie e descubra cursos bem avaliados de plataformas
+                como Udemy, Coursera, Alura e Domestika.
               </p>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <Link
@@ -31,12 +33,14 @@ const HomePage = () => {
                 >
                   Explorar Cursos
                 </Link>
-                <Link
-                  to="/login"
-                  className="bg-transparent hover:bg-purple-700 border-2 border-white font-bold py-3 px-6 rounded-lg transition-all"
-                >
-                  Entrar
-                </Link>
+                {!currentUser && (
+                  <Link
+                    to="/login"
+                    className="bg-transparent hover:bg-purple-700 border-2 border-white font-bold py-3 px-6 rounded-lg transition-all"
+                  >
+                    Entrar
+                  </Link>
+                )}
               </div>
             </div>
             <div className="md:w-1/2">
@@ -56,34 +60,84 @@ const HomePage = () => {
       {/* Features Section */}
       <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Por que usar o CourseRank?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Por que usar o CourseRank?
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                <svg
+                  className="w-6 h-6 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                  />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Avaliações Honestas</h3>
-              <p className="text-gray-600">Leia avaliações autênticas de estudantes reais que fizeram os cursos.</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Avaliações Honestas
+              </h3>
+              <p className="text-gray-600">
+                Leia avaliações autênticas de estudantes reais que fizeram os
+                cursos.
+              </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <svg
+                  className="w-6 h-6 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Qualidade Verificada</h3>
-              <p className="text-gray-600">Verificamos a qualidade e o conteúdo de cada curso antes de listá-lo em nossa plataforma.</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Qualidade Verificada
+              </h3>
+              <p className="text-gray-600">
+                Verificamos a qualidade e o conteúdo de cada curso antes de
+                listá-lo em nossa plataforma.
+              </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-6 h-6 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Descontos Exclusivos</h3>
-              <p className="text-gray-600">Acesse cupons de desconto exclusivos para cursos populares em todas as plataformas.</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Descontos Exclusivos
+              </h3>
+              <p className="text-gray-600">
+                Acesse cupons de desconto exclusivos para cursos populares em
+                todas as plataformas.
+              </p>
             </div>
           </div>
         </div>
@@ -91,7 +145,9 @@ const HomePage = () => {
 
       {/* Featured Courses */}
       <div className="py-16 container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Cursos em Destaque</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Cursos em Destaque
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredCourses.map((course) => (
             <div
@@ -106,7 +162,9 @@ const HomePage = () => {
                 />
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-semibold text-gray-800">{course.title}</h3>
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      {course.title}
+                    </h3>
                     <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
                       {course.platform}
                     </span>
@@ -117,7 +175,9 @@ const HomePage = () => {
                         <svg
                           key={i}
                           className={`h-5 w-5 ${
-                            i < Math.floor(course.rating) ? 'text-yellow-400' : 'text-gray-300'
+                            i < Math.floor(course.rating)
+                              ? "text-yellow-400"
+                              : "text-gray-300"
                           }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -127,9 +187,13 @@ const HomePage = () => {
                         </svg>
                       ))}
                     </div>
-                    <span className="text-gray-600 text-sm ml-2">{course.rating.toFixed(1)}</span>
+                    <span className="text-gray-600 text-sm ml-2">
+                      {course.rating.toFixed(1)}
+                    </span>
                   </div>
-                  <p className="text-purple-600 font-bold">R${course.price.toFixed(2)}</p>
+                  <p className="text-purple-600 font-bold">
+                    R${course.price.toFixed(2)}
+                  </p>
                 </div>
               </Link>
             </div>
@@ -148,7 +212,9 @@ const HomePage = () => {
       {/* Testimonials Section */}
       <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">O que Nossos Usuários Dizem</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            O que Nossos Usuários Dizem
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
@@ -173,7 +239,8 @@ const HomePage = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "O CourseRank me ajudou a encontrar o curso de programação perfeito. As avaliações estavam corretas!"
+                "O CourseRank me ajudou a encontrar o curso de programação
+                perfeito. As avaliações estavam corretas!"
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -199,7 +266,8 @@ const HomePage = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "Economizei mais de R$250 usando um cupom que encontrei no CourseRank. Esta plataforma é revolucionária!"
+                "Economizei mais de R$250 usando um cupom que encontrei no
+                CourseRank. Esta plataforma é revolucionária!"
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -213,7 +281,9 @@ const HomePage = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <svg
                         key={star}
-                        className={`h-4 w-4 ${star <= 4 ? 'text-yellow-400' : 'text-gray-300'}`}
+                        className={`h-4 w-4 ${
+                          star <= 4 ? "text-yellow-400" : "text-gray-300"
+                        }`}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -225,7 +295,8 @@ const HomePage = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "O recurso de comparação entre diferentes plataformas me economizou horas de pesquisa. Recomendo muito!"
+                "O recurso de comparação entre diferentes plataformas me
+                economizou horas de pesquisa. Recomendo muito!"
               </p>
             </div>
           </div>
@@ -235,4 +306,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage; 
+export default HomePage;

@@ -237,6 +237,142 @@
       "rating": 3,
       "review": "Curso ok para iniciar no tópico",
       "createdAt": "2025-05-12T03:03:26.787Z"
+    },
+    {
+      "id": "62c8",
+      "courseId": "4",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:09:24.469Z"
+    },
+    {
+      "id": "7104",
+      "courseId": "5",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:09:35.343Z"
+    },
+    {
+      "id": "d814",
+      "courseId": "9",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:09:42.685Z"
+    },
+    {
+      "id": "08bc",
+      "courseId": "12",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:09:53.553Z"
+    },
+    {
+      "id": "f42d",
+      "courseId": "11",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:13:19.853Z"
+    },
+    {
+      "id": "f742",
+      "courseId": "3",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:13:30.274Z"
+    },
+    {
+      "id": "d812",
+      "courseId": "8",
+      "userId": "user_1747749654168",
+      "rating": 5,
+      "review": "Muito bom!",
+      "createdAt": "2025-05-20T14:13:36.165Z"
+    },
+    {
+      "id": "5cd5",
+      "courseId": "11",
+      "userId": "user_1747750979409",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:29:10.184Z"
+    },
+    {
+      "id": "fcea",
+      "courseId": "8",
+      "userId": "user_1747750979409",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:29:19.230Z"
+    },
+    {
+      "id": "cec0",
+      "courseId": "3",
+      "userId": "user_1747750979409",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:29:25.448Z"
+    },
+    {
+      "id": "9fd2",
+      "courseId": "4",
+      "userId": "user_1747750979409",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:29:40.848Z"
+    },
+    {
+      "id": "d513",
+      "courseId": "9",
+      "userId": "user_1747750979409",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:29:51.574Z"
+    },
+    {
+      "id": "55d8",
+      "courseId": "12",
+      "userId": "user_1747750979409",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:30:14.314Z"
+    },
+    {
+      "id": "3d59",
+      "courseId": "4",
+      "userId": "user_1747751971579",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:41:40.769Z"
+    },
+    {
+      "id": "9039",
+      "courseId": "5",
+      "userId": "user_1747751971579",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:41:51.636Z"
+    },
+    {
+      "id": "b3f5",
+      "courseId": "9",
+      "userId": "user_1747751971579",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:41:58.530Z"
+    },
+    {
+      "id": "a40f",
+      "courseId": "12",
+      "userId": "user_1747751971579",
+      "rating": 5,
+      "review": "Realmente impactante!",
+      "createdAt": "2025-05-20T14:42:25.387Z"
     }
   ],
   "coupons": [
@@ -244,9 +380,19 @@
       "id": "1",
       "userId": "user1",
       "courseId": "1",
-      "code": "PYTHON20",
-      "discount": 20,
+      "platform": "Udemy",
+      "code": "UDM-X7YH9K2M",
+      "discount": 15,
       "expiresAt": "2024-12-31T23:59:59Z"
+    },
+    {
+      "id": "8685",
+      "userId": "user_1747751971579",
+      "courseId": "9",
+      "code": "COU-67Y3EUR8",
+      "discount": 15,
+      "platform": "Coursera",
+      "expiresAt": "2025-06-19T14:41:58.560Z"
     }
   ],
   "users": [
@@ -321,6 +467,30 @@
       "name": "Rachel Green",
       "email": "rachel@example.com",
       "createdAt": "2024-03-26T14:20:00Z"
+    },
+    {
+      "id": "user_1747749167141",
+      "name": "213",
+      "email": "123@123.com",
+      "createdAt": "2025-05-20T13:52:47.141Z"
+    },
+    {
+      "id": "user_1747749654168",
+      "name": "213",
+      "email": "123@123.com",
+      "createdAt": "2025-05-20T14:00:54.168Z"
+    },
+    {
+      "id": "user_1747750979409",
+      "name": "213",
+      "email": "123@123.com",
+      "createdAt": "2025-05-20T14:22:59.409Z"
+    },
+    {
+      "id": "user_1747751971579",
+      "name": "213",
+      "email": "123@123.com",
+      "createdAt": "2025-05-20T14:39:31.579Z"
     }
   ],
   "userLists": [
@@ -345,10 +515,62 @@
     {
       "id": "c7cd",
       "userId": "user_1747016919317",
-      "courseIds": [
-        "1"
-      ],
+      "courseIds": ["1"],
       "createdAt": "2025-05-12T02:28:39.566Z"
+    },
+    {
+      "id": "21e5",
+      "userId": "user_1747058167495",
+      "courseIds": [],
+      "createdAt": "2025-05-20T13:52:35.237Z"
+    },
+    {
+      "id": "5099",
+      "userId": "user_1747058167495",
+      "courseIds": [],
+      "createdAt": "2025-05-20T13:52:35.310Z"
+    },
+    {
+      "id": "f548",
+      "userId": "user_1747749654168",
+      "courseIds": ["3"],
+      "createdAt": "2025-05-20T14:06:19.527Z"
+    },
+    {
+      "id": "4aed",
+      "userId": "user_1747749654168",
+      "courseIds": [],
+      "createdAt": "2025-05-20T14:06:19.602Z"
+    },
+    {
+      "id": "8739",
+      "userId": "user_1747750979409",
+      "courseIds": [],
+      "createdAt": "2025-05-20T14:27:47.687Z"
+    },
+    {
+      "id": "c7a5",
+      "userId": "user_1747750979409",
+      "courseIds": [],
+      "createdAt": "2025-05-20T14:27:47.805Z"
+    }
+  ],
+  "processedRatings": [
+    {
+      "id": "1",
+      "userId": "user1",
+      "platform": "Udemy",
+      "ratingIds": ["1", "3", "8"],
+      "createdAt": "2024-05-20T14:00:00Z",
+      "updatedAt": "2024-05-20T14:00:00Z"
+    },
+    {
+      "id": "8c06",
+      "userId": "user_1747751971579",
+      "platform": "Coursera",
+      "ratingIds": ["3d59", "9039", "b3f5"],
+      "createdAt": "2025-05-20T14:41:58.580Z",
+      "updatedAt": "2025-05-20T14:41:58.580Z"
     }
   ]
 }
