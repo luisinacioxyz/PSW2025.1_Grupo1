@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchUserList, removeFromList, updateUserList, removeCourseFromList } from '../store/userListSlice';
+import { fetchUserList, removeFromList } from '../store/userListSlice';
 import { fetchCourses } from '../store/courseSlice';
 
 const MyList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state) => state.auth.user);
   const { userList, status: userListStatus } = useSelector((state) => state.userList);
   const { courses, status: coursesStatus } = useSelector((state) => state.courses);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,9 +27,8 @@ const MyList = () => {
         await dispatch(fetchCourses()).unwrap();
       }
       
-      if (userListStatus === 'idle') {
-        await dispatch(fetchUserList(user.id)).unwrap();
-      }
+      // Carregar lista do usuário
+      await dispatch(fetchUserList()).unwrap();
       
       setIsLoading(false);
     };
@@ -52,11 +51,8 @@ const MyList = () => {
     try {
       setRemovingCourses(prev => ({ ...prev, [courseId]: true }));
       
-      // Use the new removeCourseFromList thunk
-      await dispatch(removeCourseFromList({
-        userList,
-        courseId
-      })).unwrap();
+      // Use the removeFromList thunk
+      await dispatch(removeFromList(courseId)).unwrap();
       
       console.log('Course removed from list successfully');
     } catch (error) {

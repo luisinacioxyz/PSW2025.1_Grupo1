@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRatings, deleteRating } from '../store/ratingSlice';
+import { fetchRatings, fetchRatingsByUser, deleteRating } from '../store/ratingSlice';
 import { addCoupon, fetchCoupons } from '../store/couponSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import RatingForm from './RatingForm';
@@ -10,7 +10,7 @@ const RatingList = () => {
   const navigate = useNavigate();
   const { ratings: allRatings, status, error } = useSelector(state => state.ratings);
   const courses = useSelector(state => state.courses.courses);
-  const user = useSelector(state => state.user.currentUser);
+  const user = useSelector(state => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [userRatings, setUserRatings] = useState([]);
@@ -30,9 +30,8 @@ const RatingList = () => {
     const loadData = async () => {
       setIsLoading(true);
       try {
-        // Ajuste: fetchRatings agora busca todas as avaliações
-        await dispatch(fetchRatings()).unwrap();
-        dispatch(fetchCoupons(user.id));
+        // Buscar avaliações específicas do usuário
+        await dispatch(fetchRatingsByUser(user.id)).unwrap();
       } catch (err) {
         console.error('Erro ao carregar:', err);
       } finally {

@@ -1,49 +1,64 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { api } from '../utils/api';
 
 // Async thunks
 export const fetchCourses = createAsyncThunk(
   'courses/fetchCourses',
-  async () => {
-    const response = await fetch('http://localhost:3001/courses');
-    return response.json();
+  async (params = {}, { rejectWithValue }) => {
+    try {
+      const response = await api.courses.getAll(params);
+      return response.courses || response; // API retorna { courses: [...], pagination: {...} }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCourseById = createAsyncThunk(
+  'courses/fetchCourseById',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.courses.getById(id);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const addCourse = createAsyncThunk(
   'courses/addCourse',
-  async (course) => {
-    const response = await fetch('http://localhost:3001/courses', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(course),
-    });
-    return response.json();
+  async (courseData, { rejectWithValue }) => {
+    try {
+      const response = await api.courses.create(courseData);
+      return response.course || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const updateCourse = createAsyncThunk(
   'courses/updateCourse',
-  async (course) => {
-    const response = await fetch(`http://localhost:3001/courses/${course.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(course),
-    });
-    return response.json();
+  async (courseData, { rejectWithValue }) => {
+    try {
+      const response = await api.courses.update(courseData.id, courseData);
+      return response.course || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const deleteCourse = createAsyncThunk(
   'courses/deleteCourse',
-  async (id) => {
-    await fetch(`http://localhost:3001/courses/${id}`, {
-      method: 'DELETE',
-    });
-    return id;
+  async (id, { rejectWithValue }) => {
+    try {
+      await api.courses.delete(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -70,26 +85,72 @@ const courseSlice = createSlice({
     builder
       .addCase(fetchCourses.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
       .addCase(fetchCourses.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.courses = action.payload;
+        state.error = null;
       })
       .addCase(fetchCourses.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Failed to fetch courses';
+        state.error = action.payload || 'Failed to fetch courses';
+      })
+      
+      .addCase(fetchCourseById.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchCourseById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // Adicionar ou atualizar curso na lista se não existir
+        const existingIndex = state.courses.findIndex(course => course.id === action.payload.id);
+        if (existingIndex !== -1) {
+          state.courses[existingIndex] = action.payload;
+        } else {
+          state.courses.push(action.payload);
+        }
+        state.error = null;
+      })
+      .addCase(fetchCourseById.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Failed to fetch course';
+      })
+      
+      .addCase(addCourse.pending, (state) => {
+        state.error = null;
       })
       .addCase(addCourse.fulfilled, (state, action) => {
         state.courses.push(action.payload);
+        state.error = null;
+      })
+      .addCase(addCourse.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to add course';
+      })
+      
+      .addCase(updateCourse.pending, (state) => {
+        state.error = null;
       })
       .addCase(updateCourse.fulfilled, (state, action) => {
         const index = state.courses.findIndex(course => course.id === action.payload.id);
         if (index !== -1) {
           state.courses[index] = action.payload;
         }
+        state.error = null;
+      })
+      .addCase(updateCourse.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to update course';
+      })
+      
+      .addCase(deleteCourse.pending, (state) => {
+        state.error = null;
       })
       .addCase(deleteCourse.fulfilled, (state, action) => {
         state.courses = state.courses.filter(course => course.id !== action.payload);
+        state.error = null;
+      })
+      .addCase(deleteCourse.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to delete course';
       });
   },
 });

@@ -7,6 +7,7 @@ import ratingReducer from './store/ratingSlice';
 import couponReducer from './store/couponSlice';
 import userReducer from './store/userSlice';
 import userListReducer from './store/userListSlice';
+import authReducer from './store/authSlice';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -19,6 +20,7 @@ const store = configureStore({
     coupons: couponReducer,
     user: userReducer,
     userList: userListReducer,
+    auth: authReducer,
   },
 });
 

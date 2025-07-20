@@ -9,7 +9,7 @@ const CouponList = () => {
   const navigate = useNavigate();
   const { coupons, status, error } = useSelector((state) => state.coupons);
   const { courses } = useSelector((state) => state.courses);
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state) => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
   const [showCouponForm, setShowCouponForm] = useState(false);
 

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCourses } from '../store/courseSlice';
+import { fetchCourses, deleteCourse } from '../store/courseSlice';
 import { fetchRatings, addRating, deleteRating } from '../store/ratingSlice';
-import { addToList, removeFromList, addCourseToList, removeCourseFromList } from '../store/userListSlice';
+import { addCourseToList, removeCourseFromList } from '../store/userListSlice';
 import RatingForm from './RatingForm';
 import CouponForm from './CouponForm';
+import CourseForm from './CourseForm';
 
 const CourseDetail = () => {
   const { id } = useParams();
   const courseId = id;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const { courses, status: coursesStatus } = useSelector((state) => state.courses);
   const { ratings, status: ratingStatus } = useSelector((state) => state.ratings);
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state) => state.auth.user);
   const { userList, status: userListStatus } = useSelector((state) => state.userList);
   
   const [course, setCourse] = useState(null);
@@ -23,6 +25,8 @@ const CourseDetail = () => {
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [addingToList, setAddingToList] = useState(false);
   const [removingFromList, setRemovingFromList] = useState(false);
+  const [editingCourse, setEditingCourse] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     // If courses haven't been loaded, fetch them
@@ -64,6 +68,20 @@ const CourseDetail = () => {
     } catch (error) {
       console.error('Failed to delete rating:', error);
     }
+  };
+
+  const handleDeleteCourse = async () => {
+    try {
+      await dispatch(deleteCourse(courseId)).unwrap();
+      setShowDeleteConfirm(false);
+      navigate('/courses');
+    } catch (error) {
+      console.error('Erro ao excluir curso:', error);
+    }
+  };
+
+  const canManageCourse = () => {
+    return user && (user.id === course?.createdBy || user.role === 'admin');
   };
 
   const isInUserList = userList && userList.courseIds && userList.courseIds.includes(courseId);
@@ -140,6 +158,27 @@ const CourseDetail = () => {
 
   const userHasRated = user && ratings.some(rating => rating.userId === user.id);
 
+  if (editingCourse) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-4">
+            <button
+              onClick={() => setEditingCourse(false)}
+              className="flex items-center text-gray-600 hover:text-gray-800"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Voltar para detalhes
+            </button>
+          </div>
+          <CourseForm course={course} onCancel={() => setEditingCourse(false)} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Link to="/courses" className="text-purple-600 hover:text-purple-800 flex items-center mb-6">
@@ -166,7 +205,25 @@ const CourseDetail = () => {
                 </div>
                 <h1 className="mt-1 text-3xl font-bold text-gray-900">{course.title}</h1>
               </div>
-              <div className="text-2xl font-bold text-purple-600">R${course.price.toFixed(2)}</div>
+              <div className="flex items-center space-x-4">
+                <div className="text-2xl font-bold text-purple-600">R${course.price.toFixed(2)}</div>
+                {canManageCourse() && (
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => setEditingCourse(true)}
+                      className="text-blue-600 bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-md text-sm font-medium"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => setShowDeleteConfirm(true)}
+                      className="text-red-600 bg-red-100 hover:bg-red-200 px-3 py-1 rounded-md text-sm font-medium"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
             
             <p className="mt-4 text-gray-600">{course.description}</p>
@@ -263,12 +320,15 @@ const CourseDetail = () => {
                       Avaliar este Curso
                     </button>
                   )}
-                  <button 
-                    onClick={() => setShowCouponForm(true)}
-                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium"
-                  >
-                    Criar Cupom
-                  </button>
+                  {/* Só admins podem criar cupons */}
+                  {user?.role === 'admin' && (
+                    <button 
+                      onClick={() => setShowCouponForm(true)}
+                      className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium"
+                    >
+                      Criar Cupom
+                    </button>
+                  )}
                 </>
               )}
             </div>
@@ -357,6 +417,34 @@ const CourseDetail = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de confirmação de exclusão */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Confirmar Exclusão
+            </h3>
+            <p className="text-sm text-gray-500 mb-6">
+              Tem certeza que deseja excluir este curso? Esta ação não pode ser desfeita e você será redirecionado para a lista de cursos.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleDeleteCourse}
+                className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

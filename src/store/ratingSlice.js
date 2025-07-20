@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { api } from '../utils/api';
 
 const initialState = {
   ratings: [],
@@ -6,64 +7,69 @@ const initialState = {
   error: null,
 };
 
-// Agora fetchRatings recebe courseId para filtrar avaliações por curso
+// Async thunks
 export const fetchRatings = createAsyncThunk(
   'ratings/fetchRatings',
-  async (courseId) => {
-    const url = courseId
-      ? `http://localhost:3001/ratings?courseId=${courseId}`
-      : 'http://localhost:3001/ratings';
-    const response = await fetch(url);
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Falha ao buscar avaliações');
+  async (courseId, { rejectWithValue }) => {
+    try {
+      if (courseId) {
+        const response = await api.ratings.getByCourse(courseId);
+        return response.ratings || response;
+      } else {
+        const response = await api.ratings.getAll();
+        return response.ratings || response;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-    return response.json();
+  }
+);
+
+export const fetchRatingsByUser = createAsyncThunk(
+  'ratings/fetchRatingsByUser',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.ratings.getByUser(userId);
+      return response.ratings || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const addRating = createAsyncThunk(
   'ratings/addRating',
-  async ({ courseId, userId, rating, review }) => {
-    const payload = {
-      courseId,
-      userId,
-      rating,
-      review,
-      createdAt: new Date().toISOString(),
-    };
-    const res = await fetch('http://localhost:3001/ratings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error('Erro ao adicionar avaliação');
-    return await res.json();
+  async (ratingData, { rejectWithValue }) => {
+    try {
+      const response = await api.ratings.create(ratingData);
+      return response.rating || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const updateRating = createAsyncThunk(
   'ratings/updateRating',
-  async ({ id, courseId, userId, rating, review, createdAt }) => {
-    const payload = { id, courseId, userId, rating, review, createdAt };
-    const res = await fetch(`http://localhost:3001/ratings/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error('Erro ao atualizar avaliação');
-    return await res.json();
+  async ({ id, ...updateData }, { rejectWithValue }) => {
+    try {
+      const response = await api.ratings.update(id, updateData);
+      return response.rating || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const deleteRating = createAsyncThunk(
   'ratings/deleteRating',
-  async (id) => {
-    const res = await fetch(`http://localhost:3001/ratings/${id}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw new Error('Erro ao deletar avaliação');
-    return id;
+  async (id, { rejectWithValue }) => {
+    try {
+      await api.ratings.delete(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -83,7 +89,19 @@ const ratingSlice = createSlice({
       })
       .addCase(fetchRatings.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Falha ao buscar avaliações';
+        state.error = action.payload || 'Falha ao buscar avaliações';
+      })
+      .addCase(fetchRatingsByUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchRatingsByUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.ratings = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchRatingsByUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Falha ao buscar avaliações do usuário';
       })
       .addCase(addRating.fulfilled, (state, action) => {
         state.ratings.push(action.payload);

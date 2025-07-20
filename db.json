@@ -321,6 +321,12 @@
       "name": "Rachel Green",
       "email": "rachel@example.com",
       "createdAt": "2024-03-26T14:20:00Z"
+    },
+    {
+      "id": "user_1753020788985",
+      "name": "JOAO B ACCIOLY",
+      "email": "bebanholi@gmail.com",
+      "createdAt": "2025-07-20T14:13:08.985Z"
     }
   ],
   "userLists": [
@@ -349,6 +355,18 @@
         "1"
       ],
       "createdAt": "2025-05-12T02:28:39.566Z"
+    },
+    {
+      "id": "4a3b",
+      "userId": "user_1747702000437",
+      "courseIds": [],
+      "createdAt": "2025-07-20T14:13:01.457Z"
+    },
+    {
+      "id": "c712",
+      "userId": "user_1747702000437",
+      "courseIds": [],
+      "createdAt": "2025-07-20T14:13:01.478Z"
     }
   ]
 }

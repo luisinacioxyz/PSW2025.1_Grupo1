@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, fetchUser } from './store/userSlice';
+import { initializeAuth } from './store/authSlice';
 import { fetchCourses } from './store/courseSlice';
 import { fetchUserList } from './store/userListSlice';
 import HomePage from './components/HomePage';
@@ -9,123 +9,126 @@ import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
 import Login from './components/Login';
+import Register from './components/Register';
 import RatingList from './components/RatingList';
 import CouponList from './components/CouponList';
 import MyList from './components/MyList';
+import MyCourses from './components/MyCourses';
 import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.currentUser);
-  const { courses, status: coursesStatus } = useSelector((state) => state.courses);
-  const { userList, status: userListStatus } = useSelector((state) => state.userList);
+  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+  const { status: userListStatus } = useSelector((state) => state.userList);
   
   useEffect(() => {
-    // Load user from localStorage if available
-    const userId = localStorage.getItem('userId');
-    if (userId && !user) {
-      dispatch(fetchUser(userId)).then((resultAction) => {
-        if (fetchUser.fulfilled.match(resultAction)) {
-          // Fetch user list after user is loaded
-          dispatch(fetchUserList(userId));
-        }
-      });
-    }
+    // Inicializar autenticação (verificar se há token válido no localStorage)
+    dispatch(initializeAuth());
     
-    // Fetch courses on app load
-    dispatch(fetchCourses()).then(() => {
-      console.log("Courses loaded:", courses.map(c => `${c.id}: ${c.title}`));
-    });
+    // Carregar cursos na inicialização
+    dispatch(fetchCourses());
+  }, [dispatch]);
 
-    // Fetch user's list if logged in but not yet loaded
-    if (user && userListStatus === 'idle') {
-      dispatch(fetchUserList(user.id));
+  // Carregar lista do usuário quando ele estiver autenticado
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      dispatch(fetchUserList());
     }
-  }, [dispatch, user, userListStatus]);
-  
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  }, [dispatch, isAuthenticated, user]);
+
+  // Mostrar loading inicial enquanto verifica autenticação
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Router>
       <div className="min-h-screen bg-gray-100 flex flex-col">
-        <nav className="bg-white shadow-lg">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center h-16">
-              <Link to="/" className="text-2xl font-bold text-purple-600">
-                CourseRank
-              </Link>
-              <div className="flex space-x-4 items-center">
-                <Link
-                  to="/"
-                  className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                >
-                  Início
-                </Link>
-                <Link
-                  to="/courses"
-                  className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                >
-                  Cursos
-                </Link>
-                {user ? (
-                  <>
-                    <Link
-                      to="/my-list"
-                      className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                    >
-                      Minha Lista
-                    </Link>
-                    <Link
-                      to="/ratings"
-                      className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                    >
-                      Minhas Avaliações
-                    </Link>
-                    <Link
-                      to="/my-coupons"
-                      className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                    >
-                      Meus Cupons
-                    </Link>
-                    <Link
-                      to="/courses/create"
-                      className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                    >
-                      Adicionar Curso
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md"
-                    >
-                      Sair
-                    </button>
-                  </>
-                ) : (
-                  <Link
-                    to="/login"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md"
-                  >
-                    Entrar
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Navbar />
 
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/courses" element={<CourseList />} />
-            <Route path="/courses/create" element={<CreateCourse />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/ratings" element={<RatingList />} />
-            <Route path="/my-coupons" element={<CouponList />} />
-            <Route path="/my-list" element={<MyList />} />
+            
+            {/* Rotas públicas (só para usuários não autenticados) */}
+            <Route 
+              path="/login" 
+              element={
+                <ProtectedRoute requireAuth={false}>
+                  <Login />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/register" 
+              element={
+                <ProtectedRoute requireAuth={false}>
+                  <Register />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Rotas protegidas (só para usuários autenticados) */}
+            <Route 
+              path="/courses/create" 
+              element={
+                <ProtectedRoute>
+                  <CreateCourse />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-course" 
+              element={
+                <ProtectedRoute>
+                  <CreateCourse />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/my-list" 
+              element={
+                <ProtectedRoute>
+                  <MyList />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/ratings" 
+              element={
+                <ProtectedRoute>
+                  <RatingList />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/my-coupons" 
+              element={
+                <ProtectedRoute>
+                  <CouponList />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/my-courses" 
+              element={
+                <ProtectedRoute>
+                  <MyCourses />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </main>
         

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCourses, setSearchTerm, setSelectedPlatform } from '../store/courseSlice';
+import { fetchCourses, setSearchTerm, setSelectedPlatform, deleteCourse } from '../store/courseSlice';
 import { Link } from 'react-router-dom';
+import CourseForm from './CourseForm';
 
 const CourseList = () => {
   const dispatch = useDispatch();
   const { courses, status, error, searchTerm, selectedPlatform } = useSelector(
     (state) => state.courses
   );
+  const user = useSelector((state) => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
+  const [editingCourse, setEditingCourse] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -33,6 +37,27 @@ const CourseList = () => {
     dispatch(setSelectedPlatform(e.target.value));
   };
 
+  const handleEditCourse = (course) => {
+    setEditingCourse(course);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCourse(null);
+  };
+
+  const handleDeleteCourse = async (courseId) => {
+    try {
+      await dispatch(deleteCourse(courseId)).unwrap();
+      setShowDeleteConfirm(null);
+    } catch (error) {
+      console.error('Erro ao excluir curso:', error);
+    }
+  };
+
+  const canManageCourse = (course) => {
+    return user && (user.id === course.createdBy || user.role === 'admin');
+  };
+
   if (status === 'loading' || isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -45,6 +70,27 @@ const CourseList = () => {
     return (
       <div className="text-red-500 p-4 text-center">
         Erro: {error || 'Falha ao carregar cursos'}
+      </div>
+    );
+  }
+
+  if (editingCourse) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-4">
+            <button
+              onClick={handleCancelEdit}
+              className="flex items-center text-gray-600 hover:text-gray-800"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Voltar para lista
+            </button>
+          </div>
+          <CourseForm course={editingCourse} onCancel={handleCancelEdit} />
+        </div>
       </div>
     );
   }
@@ -163,10 +209,62 @@ const CourseList = () => {
                   >
                     Visitar
                   </a>
+                  {canManageCourse(course) && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleEditCourse(course);
+                        }}
+                        className="text-blue-600 bg-blue-100 hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setShowDeleteConfirm(course.id);
+                        }}
+                        className="text-red-600 bg-red-100 hover:bg-red-200 px-3 py-2 rounded-md text-sm font-medium"
+                      >
+                        Excluir
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Modal de confirmação de exclusão */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Confirmar Exclusão
+            </h3>
+            <p className="text-sm text-gray-500 mb-6">
+              Tem certeza que deseja excluir este curso? Esta ação não pode ser desfeita.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteConfirm(null)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => handleDeleteCourse(showDeleteConfirm)}
+                className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

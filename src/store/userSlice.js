@@ -1,43 +1,41 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { api } from '../utils/api';
 
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
-  async (userId) => {
-    const response = await fetch(`http://localhost:3001/users/${userId}`);
-    return response.json();
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.users.getById(userId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
+// Manter compatibilidade com código existente - mas será depreciado
 export const loginUser = createAsyncThunk(
   'user/loginUser',
-  async (credentials) => {
-    // In a real app, this would be an actual login API call
-    // For now, we'll just create a new user if they don't exist
-    const response = await fetch('http://localhost:3001/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...credentials,
-        id: `user_${Date.now()}`,
-        createdAt: new Date().toISOString(),
-      }),
-    });
-    const user = await response.json();
-    localStorage.setItem('userId', user.id);
-    return user;
+  async (credentials, { rejectWithValue }) => {
+    try {
+      // Redirecionar para o authSlice
+      const response = await api.auth.login(credentials);
+      return response.user;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
-// Check if user exists in localStorage and load on startup
-const getUserFromStorage = () => {
-  const userId = localStorage.getItem('userId');
-  return userId ? { id: userId } : null;
+// Função para verificar se há usuário autenticado
+const getCurrentUser = () => {
+  // Verificar se há token e buscar dados do usuário via API
+  const token = localStorage.getItem('authToken');
+  return token ? null : null; // Será carregado via initializeAuth
 };
 
 const initialState = {
-  currentUser: getUserFromStorage(),
+  currentUser: getCurrentUser(),
   status: 'idle',
   error: null,
 };
@@ -62,7 +60,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Failed to fetch user';
+        state.error = action.payload || 'Failed to fetch user';
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.currentUser = action.payload;

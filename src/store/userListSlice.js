@@ -1,115 +1,76 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { api } from '../utils/api';
 
+// Async thunks
 export const fetchUserList = createAsyncThunk(
   'userList/fetchUserList',
-  async (userId) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/userLists?userId=${userId}`);
-      const list = await response.json();
-      
-      if (list.length > 0) {
-        return list[0];
-      } else {
-        // Create a new list for this user
-        const createResponse = await fetch('http://localhost:3001/userLists', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId,
-            courseIds: [],
-            createdAt: new Date().toISOString()
-          }),
-        });
-        return createResponse.json();
-      }
+      const response = await api.lists.getMy();
+      return response.list || response;
     } catch (error) {
-      console.error('Error fetching or creating user list:', error);
-      throw error;
+      return rejectWithValue(error.message);
     }
   }
 );
 
-export const updateUserList = createAsyncThunk(
-  'userList/updateUserList',
-  async (userList) => {
+export const fetchUserListByUserId = createAsyncThunk(
+  'userList/fetchUserListByUserId',
+  async (userId, { rejectWithValue }) => {
     try {
-      // Always use PUT to update the existing list
-      const response = await fetch(`http://localhost:3001/userLists/${userList.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userList),
-      });
-      return response.json();
+      const response = await api.lists.getByUser(userId);
+      return response.list || response;
     } catch (error) {
-      console.error('Error updating user list:', error);
-      throw error;
+      return rejectWithValue(error.message);
     }
   }
 );
 
+export const addToList = createAsyncThunk(
+  'userList/addToList',
+  async (courseId, { rejectWithValue }) => {
+    try {
+      const response = await api.lists.addCourse(courseId);
+      return response.list || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const removeFromList = createAsyncThunk(
+  'userList/removeFromList',
+  async (courseId, { rejectWithValue }) => {
+    try {
+      const response = await api.lists.removeCourse(courseId);
+      return response.list || response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Mantendo compatibilidade com os nomes antigos
 export const addCourseToList = createAsyncThunk(
   'userList/addCourseToList',
-  async ({ userList, courseId }, { dispatch }) => {
+  async ({ courseId }, { rejectWithValue }) => {
     try {
-      if (!userList || !userList.id) {
-        throw new Error('User list not found or not properly initialized');
-      }
-      
-      // Add the course to the list if it's not already there
-      if (!userList.courseIds.includes(courseId)) {
-        const updatedList = {
-          ...userList,
-          courseIds: [...userList.courseIds, courseId]
-        };
-        
-        const response = await fetch(`http://localhost:3001/userLists/${userList.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedList),
-        });
-        
-        return response.json();
-      }
-      
-      return userList;
+      const response = await api.lists.addCourse(courseId);
+      return response.list || response;
     } catch (error) {
-      console.error('Error adding course to list:', error);
-      throw error;
+      return rejectWithValue(error.message);
     }
   }
 );
 
 export const removeCourseFromList = createAsyncThunk(
   'userList/removeCourseFromList',
-  async ({ userList, courseId }, { dispatch }) => {
+  async ({ courseId }, { rejectWithValue }) => {
     try {
-      if (!userList || !userList.id) {
-        throw new Error('User list not found or not properly initialized');
-      }
-      
-      const updatedList = {
-        ...userList,
-        courseIds: userList.courseIds.filter(id => id !== courseId)
-      };
-      
-      const response = await fetch(`http://localhost:3001/userLists/${userList.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedList),
-      });
-      
-      return response.json();
+      const response = await api.lists.removeCourse(courseId);
+      return response.list || response;
     } catch (error) {
-      console.error('Error removing course from list:', error);
-      throw error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -124,45 +85,87 @@ const userListSlice = createSlice({
   name: 'userList',
   initialState,
   reducers: {
-    addToList: (state, action) => {
-      if (state.userList) {
-        if (!state.userList.courseIds.includes(action.payload)) {
-          state.userList.courseIds.push(action.payload);
-        }
-      }
+    clearUserList: (state) => {
+      state.userList = null;
+      state.status = 'idle';
+      state.error = null;
     },
-    removeFromList: (state, action) => {
-      if (state.userList) {
-        state.userList.courseIds = state.userList.courseIds.filter(
-          id => id !== action.payload
-        );
-      }
-    }
   },
   extraReducers: (builder) => {
     builder
+      // Fetch User List
       .addCase(fetchUserList.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
       .addCase(fetchUserList.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.userList = action.payload;
+        state.error = null;
       })
       .addCase(fetchUserList.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Failed to fetch user list';
+        state.error = action.payload || 'Failed to fetch user list';
       })
-      .addCase(updateUserList.fulfilled, (state, action) => {
+      
+      // Fetch User List By User ID
+      .addCase(fetchUserListByUserId.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchUserListByUserId.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.userList = action.payload;
+        state.error = null;
       })
+      .addCase(fetchUserListByUserId.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Failed to fetch user list';
+      })
+      
+      // Add to List
+      .addCase(addToList.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(addToList.fulfilled, (state, action) => {
+        state.userList = action.payload;
+        state.error = null;
+      })
+      .addCase(addToList.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to add course to list';
+      })
+      
+      // Remove from List
+      .addCase(removeFromList.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(removeFromList.fulfilled, (state, action) => {
+        state.userList = action.payload;
+        state.error = null;
+      })
+      .addCase(removeFromList.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to remove course from list';
+      })
+      
+      // Add Course to List (compatibilidade)
       .addCase(addCourseToList.fulfilled, (state, action) => {
         state.userList = action.payload;
+        state.error = null;
       })
+      .addCase(addCourseToList.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to add course to list';
+      })
+      
+      // Remove Course from List (compatibilidade)
       .addCase(removeCourseFromList.fulfilled, (state, action) => {
         state.userList = action.payload;
+        state.error = null;
+      })
+      .addCase(removeCourseFromList.rejected, (state, action) => {
+        state.error = action.payload || 'Failed to remove course from list';
       });
   },
 });
 
-export const { addToList, removeFromList } = userListSlice.actions;
-export default userListSlice.reducer; 
+export const { clearUserList } = userListSlice.actions;
+export default userListSlice.reducer;
