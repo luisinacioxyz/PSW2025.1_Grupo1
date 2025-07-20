@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import homepageImage from '../imgs/homepage.png';
 
+
 const HomePage = () => {
+  const { isAuthenticated } = useSelector(state => state.auth);
   const { courses } = useSelector((state) => state.courses);
-  
+
   // Get 3 featured courses (highest rated)
   const featuredCourses = [...courses]
     .sort((a, b) => b.rating - a.rating)
@@ -31,13 +33,17 @@ const HomePage = () => {
                 >
                   Explorar Cursos
                 </Link>
-                <Link
-                  to="/login"
-                  className="bg-transparent hover:bg-purple-700 border-2 border-white font-bold py-3 px-6 rounded-lg transition-all"
-                >
-                  Entrar
-                </Link>
+
+                {!isAuthenticated && (
+                  <Link
+                    to="/login"
+                    className="bg-transparent hover:bg-purple-700 border-2 border-white font-bold py-3 px-6 rounded-lg transition-all"
+                  >
+                    Entrar
+                  </Link>
+                )}
               </div>
+
             </div>
             <div className="md:w-1/2">
               <div className="relative">
@@ -116,9 +122,8 @@ const HomePage = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`h-5 w-5 ${
-                            i < Math.floor(course.rating) ? 'text-yellow-400' : 'text-gray-300'
-                          }`}
+                          className={`h-5 w-5 ${i < Math.floor(course.rating) ? 'text-yellow-400' : 'text-gray-300'
+                            }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"

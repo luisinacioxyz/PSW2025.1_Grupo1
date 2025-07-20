@@ -16,26 +16,24 @@ const MyList = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate('/login');
+      navigate('/login', { replace: true });
       return;
     }
 
     const loadData = async () => {
       setIsLoading(true);
-      
+
       if (coursesStatus === 'idle') {
         await dispatch(fetchCourses()).unwrap();
       }
-      
-      // Carregar lista do usuário
+
       await dispatch(fetchUserList()).unwrap();
-      
+
       setIsLoading(false);
     };
 
     loadData();
-  }, [dispatch, navigate, user, coursesStatus, userListStatus]);
-
+  }, [dispatch, navigate, user, coursesStatus]);
   useEffect(() => {
     if (userList && userList.courseIds && courses.length > 0) {
       const myCourses = userList.courseIds
@@ -47,13 +45,13 @@ const MyList = () => {
 
   const handleRemoveFromList = async (courseId) => {
     if (!user || !userList) return;
-    
+
     try {
       setRemovingCourses(prev => ({ ...prev, [courseId]: true }));
-      
+
       // Use the removeFromList thunk
       await dispatch(removeFromList(courseId)).unwrap();
-      
+
       console.log('Course removed from list successfully');
     } catch (error) {
       console.error('Failed to remove course from list:', error);
@@ -120,13 +118,12 @@ const MyList = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`h-5 w-5 ${
-                            i < Math.floor(course.rating)
+                          className={`h-5 w-5 ${i < Math.floor(course.rating)
                               ? 'text-yellow-400'
                               : i < course.rating
-                              ? 'text-yellow-300'
-                              : 'text-gray-300'
-                          }`}
+                                ? 'text-yellow-300'
+                                : 'text-gray-300'
+                            }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
@@ -145,12 +142,12 @@ const MyList = () => {
                 <span className="text-purple-600 font-bold text-xl">R${course.price.toFixed(2)}</span>
                 <div className="flex space-x-2">
                   <Link
-                    to={`/courses/${course.id}`} 
+                    to={`/courses/${course.id}`}
                     className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
                   >
                     Detalhes
                   </Link>
-                  <button 
+                  <button
                     onClick={() => handleRemoveFromList(course.id)}
                     disabled={removingCourses[course.id]}
                     className="text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"
