@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { users } = require('../data/mockData');
+const User = require('../models/User');
 
 // Middleware para verificar token JWT
-const authenticateToken = (req, res, next) => {
+async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
@@ -10,24 +10,22 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ error: 'Token de acesso requerido' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Token inválido ou expirado' });
-    }
-    
-    // Buscar usuário completo pelos dados do token
-    const fullUser = users.find(u => u.id === user.id);
-    if (!fullUser) {
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    // Buscar usuário completo no MongoDB
+    const user = await User.findById(payload.id).select('-password');
+    if (!user) {
       return res.status(404).json({ error: 'Usuário não encontrado' });
     }
-    
-    req.user = fullUser;
+    req.user = user;
     next();
-  });
-};
+  } catch (err) {
+    return res.status(403).json({ error: 'Token inválido ou expirado' });
+  }
+}
 
 // Middleware opcional de autenticação (não falha se não houver token)
-const optionalAuth = (req, res, next) => {
+async function optionalAuth(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -36,39 +34,38 @@ const optionalAuth = (req, res, next) => {
     return next();
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      req.user = null;
-    } else {
-      const fullUser = users.find(u => u.id === user.id);
-      req.user = fullUser || null;
-    }
-    next();
-  });
-};
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(payload.id).select('-password');
+    req.user = user || null;
+  } catch {
+    req.user = null;
+  }
+  next();
+}
 
 // Middleware para verificar se é admin
-const requireAdmin = (req, res, next) => {
+function requireAdmin(req, res, next) {
   if (!req.user || req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Acesso negado. Privilégios de administrador necessários.' });
   }
   next();
-};
+}
 
 // Middleware para verificar se é dono do recurso ou admin
-const requireOwnershipOrAdmin = (resourceUserId) => {
+// paramKey: nome do parâmetro na rota que contém o userId
+function requireOwnershipOrAdmin(paramKey = 'userId') {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ error: 'Autenticação requerida' });
     }
-    
+    const resourceUserId = req.params[paramKey];
     if (req.user.role === 'admin' || req.user.id === resourceUserId) {
       return next();
     }
-    
     return res.status(403).json({ error: 'Acesso negado. Você só pode acessar seus próprios recursos.' });
   };
-};
+}
 
 module.exports = {
   authenticateToken,
