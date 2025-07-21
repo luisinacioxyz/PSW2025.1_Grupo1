@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { logout } from '../store/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { clearAuthToken } from '../utils/api';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -10,6 +12,7 @@ const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleLogout = () => {
+    clearAuthToken(); // Limpar o token do localStorage
     dispatch(logout());
     setShowUserMenu(false);
     navigate('/');
@@ -32,20 +35,33 @@ const Navbar = () => {
               >
                 Cursos
               </Link>
+              {isAuthenticated && user?.role === 'admin' && (
+                <Link
+                  to="/my-courses"
+                  className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Criar Curso
+                </Link>
+              )}
               {isAuthenticated && (
                 <>
-                  {/* Só usuários autenticados podem criar cursos */}
-                  <Link
-                    to="/create-course"
-                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Criar Curso
-                  </Link>
                   <Link
                     to="/my-list"
                     className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                   >
                     Minha Lista
+                  </Link>
+                  <Link
+                    to="/my-coupons"
+                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                  >
+                    Meus Cupons
+                  </Link>
+                  <Link
+                    to="/ratings"
+                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                  >
+                    Minhas Avaliações
                   </Link>
                 </>
               )}
@@ -86,13 +102,15 @@ const Navbar = () => {
                     >
                       Meu Perfil
                     </Link>
-                    <Link
-                      to="/my-courses"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setShowUserMenu(false)}
-                    >
-                      Meus Cursos
-                    </Link>
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/my-courses"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Meus Cursos
+                      </Link>
+                    )}
                     <Link
                       to="/ratings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -100,15 +118,20 @@ const Navbar = () => {
                     >
                       Minhas Avaliações
                     </Link>
-                    {user?.role === 'admin' && (
-                      <Link
-                        to="/my-coupons"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Meus Cupons
-                      </Link>
-                    )}
+                    <Link
+                      to="/my-coupons"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      Meus Cupons
+                    </Link>
+                    <Link
+                      to="/my-list"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      Minha Lista
+                    </Link>
                     <button
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

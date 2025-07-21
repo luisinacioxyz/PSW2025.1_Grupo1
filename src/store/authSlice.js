@@ -1,18 +1,41 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, setAuthToken, clearAuthToken } from '../utils/api';
 
-// Async thunks
+// Initial state for authentication
+const initialState = {
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+  registerSuccess: false,
+};
+
+// Async thunk to initialize authentication
+export const initializeAuth = createAsyncThunk(
+  'auth/initializeAuth',
+  async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      return null;
+    }
+    
+    try {
+      const response = await api.auth.getProfile();
+      return response;
+    } catch (error) {
+      clearAuthToken(); // Remove invalid token
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk for user registration
 export const registerUser = createAsyncThunk(
-  'auth/register',
+  'auth/registerUser',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.auth.register(userData);
-      
-      // Salvar token no localStorage
-      if (response.token) {
-        setAuthToken(response.token);
-      }
-      
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -20,17 +43,15 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+// Async thunk for user login
 export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (credentials, { rejectWithValue }) => {
+  'auth/loginUser',
+  async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.auth.login(credentials);
-      
-      // Salvar token no localStorage
+      const response = await api.auth.login(userData);
       if (response.token) {
-        setAuthToken(response.token);
+        setAuthToken(response.token); // Save token securely
       }
-      
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -38,8 +59,9 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const fetchUserProfile = createAsyncThunk(
-  'auth/fetchProfile',
+// Async thunk to get user profile
+export const getProfile = createAsyncThunk(
+  'auth/getProfile',
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.auth.getProfile();
@@ -50,8 +72,9 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
+// Async thunk to update user profile
 export const updateUserProfile = createAsyncThunk(
-  'auth/updateProfile',
+  'auth/updateUserProfile',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.auth.updateProfile(userData);
@@ -62,6 +85,7 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+// Async thunk to change password
 export const changePassword = createAsyncThunk(
   'auth/changePassword',
   async (passwordData, { rejectWithValue }) => {
@@ -74,36 +98,6 @@ export const changePassword = createAsyncThunk(
   }
 );
 
-// Função para verificar se há token no localStorage e carregar usuário
-export const initializeAuth = createAsyncThunk(
-  'auth/initialize',
-  async (_, { dispatch, rejectWithValue }) => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      return null;
-    }
-    
-    try {
-      // Verificar se o token ainda é válido
-      const response = await api.auth.getProfile();
-      return response;
-    } catch (error) {
-      // Token inválido, remover do localStorage
-      clearAuthToken();
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-const initialState = {
-  user: null,
-  token: localStorage.getItem('authToken'),
-  isAuthenticated: !!localStorage.getItem('authToken'),
-  loading: false,
-  error: null,
-  registerSuccess: false,
-};
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -113,13 +107,19 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      clearAuthToken();
+      clearAuthToken(); // Clear token on logout
     },
     clearError: (state) => {
       state.error = null;
     },
     clearRegisterSuccess: (state) => {
       state.registerSuccess = false;
+    },
+    setCredentials: (state, action) => {
+      const { user, token } = action.payload;
+      state.user = user;
+      state.token = token;
+      state.isAuthenticated = true;
     },
   },
   extraReducers: (builder) => {
@@ -150,9 +150,7 @@ const authSlice = createSlice({
         state.error = null;
         state.registerSuccess = false;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-        state.isAuthenticated = true;
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
         state.registerSuccess = true;
       })
@@ -179,12 +177,12 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
       
-      // Fetch Profile
-      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+      // Get Profile
+      .addCase(getProfile.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.isAuthenticated = true;
       })
-      .addCase(fetchUserProfile.rejected, (state) => {
+      .addCase(getProfile.rejected, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.token = null;
@@ -212,13 +210,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearError, clearRegisterSuccess } = authSlice.actions;
-
-// Selectors
-export const selectAuth = (state) => state.auth;
-export const selectUser = (state) => state.auth.user;
-export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
-export const selectAuthLoading = (state) => state.auth.loading;
-export const selectAuthError = (state) => state.auth.error;
+export const { logout, clearError, clearRegisterSuccess, setCredentials } = authSlice.actions;
 
 export default authSlice.reducer;

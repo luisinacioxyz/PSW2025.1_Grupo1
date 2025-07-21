@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { registerUser, clearError, clearRegisterSuccess } from '../store/authSlice';
 
 const Register = () => {
@@ -22,13 +22,10 @@ const Register = () => {
   // Redirecionar para login após registro bem-sucedido
   useEffect(() => {
     if (registerSuccess) {
-      // Mostrar mensagem de sucesso e redirecionar para login
-      setTimeout(() => {
         navigate('/login', { 
           replace: true, 
           state: { message: 'Conta criada com sucesso! Faça login para continuar.' }
         });
-      }, 1500);
     }
   }, [registerSuccess, navigate]);
 
@@ -42,7 +39,7 @@ const Register = () => {
   // Limpar erros quando o componente for desmontado
   useEffect(() => {
     return () => {
-      dispatch(clearError());
+      //dispatch(clearError());
       dispatch(clearRegisterSuccess());
     };
   }, [dispatch]);
@@ -54,7 +51,9 @@ const Register = () => {
       errors.name = 'Nome é obrigatório';
     } else if (formData.name.trim().length < 2) {
       errors.name = 'Nome deve ter pelo menos 2 caracteres';
-    }
+    } else if (/\d/.test(formData.name)) {
+    errors.name = 'Nome não pode conter números';
+  }
 
     if (!formData.email) {
       errors.email = 'Email é obrigatório';
@@ -85,17 +84,22 @@ const Register = () => {
       [name]: value
     }));
 
-    // Limpar erro de validação específico quando o usuário começar a digitar
     if (validationErrors[name]) {
       setValidationErrors(prev => ({
         ...prev,
         [name]: ''
       }));
     }
+
+   if (error) {
+    dispatch(clearError());
+   }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    dispatch(clearError());
     
     if (!validateForm()) {
       return;
@@ -104,9 +108,7 @@ const Register = () => {
     try {
       const { confirmPassword, ...userData } = formData;
       await dispatch(registerUser(userData)).unwrap();
-      // Sucesso - o redirect será feito pelo useEffect
     } catch (error) {
-      // Erro já será mostrado pelo estado do Redux
       console.error('Registration failed:', error);
     }
   };
@@ -155,7 +157,7 @@ const Register = () => {
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414l2-2a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
@@ -174,7 +176,7 @@ const Register = () => {
                 id="name"
                 name="name"
                 type="text"
-                autoComplete="name"
+                autoComplete="off"
                 required
                 value={formData.name}
                 onChange={handleChange}
@@ -196,7 +198,7 @@ const Register = () => {
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
+                autoComplete="off"
                 required
                 value={formData.email}
                 onChange={handleChange}
@@ -219,7 +221,7 @@ const Register = () => {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
+                  autoComplete="off"
                   required
                   value={formData.password}
                   onChange={handleChange}
@@ -259,7 +261,7 @@ const Register = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
+                  autoComplete="off"
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}

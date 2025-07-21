@@ -1,18 +1,19 @@
 const bcrypt = require('bcryptjs');
-const jwt    = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const User   = require('../models/User');
+const User = require('../models/User');
 
 exports.register = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body; // Adicione 'role' aqui
   try {
     if (await User.findOne({ email })) {
       return res.status(400).json({ error: 'Usuário já existe com este email' });
     }
-    const user = new User({ name, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashedPassword, role: role || 'user' }); // Use o papel fornecido ou 'user' como padrão
     await user.save();
 
     const token = jwt.sign(

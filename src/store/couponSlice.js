@@ -4,7 +4,9 @@ export const fetchCoupons = createAsyncThunk(
   'coupons/fetchCoupons',
   async (userId) => {
     const response = await fetch(`http://localhost:3001/coupons?userId=${userId}`);
-    return response.json();
+    const data = await response.json();
+    console.log('Fetched coupons:', data); // Log the response
+    return data; // Ensure this is an array
   }
 );
 

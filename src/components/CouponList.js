@@ -59,19 +59,24 @@ const CouponList = () => {
     );
   }
 
+  // Ensure coupons is an array before mapping
+  const couponList = Array.isArray(coupons) ? coupons : [];
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Seus Cupons</h1>
-        <button
-          onClick={() => setShowCouponForm(true)}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium flex items-center"
-        >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          Criar Cupom
-        </button>
+        {user.role === 'moderator' && (
+          <button
+            onClick={() => setShowCouponForm(true)}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium flex items-center"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Criar Cupom
+          </button>
+        )}
       </div>
 
       {/* Coupon Form Modal */}
@@ -89,7 +94,7 @@ const CouponList = () => {
         </div>
       )}
 
-      {coupons.length === 0 ? (
+      {couponList.length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -97,20 +102,21 @@ const CouponList = () => {
           <h3 className="mt-2 text-lg font-medium text-gray-900">Nenhum cupom encontrado</h3>
           <p className="mt-1 text-gray-500">Você ainda não tem nenhum cupom.</p>
           <div className="mt-6">
-            <button
-              onClick={() => setShowCouponForm(true)}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
-            >
-              Crie Seu Primeiro Cupom
-            </button>
+            {user.role === 'moderator' && (
+              <button
+                onClick={() => setShowCouponForm(true)}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
+              >
+                Crie Seu Primeiro Cupom
+              </button>
+            )}
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {coupons.map((coupon) => {
+          {couponList.map((coupon) => {
             const course = getCourseById(coupon.courseId);
             const isExpired = new Date(coupon.expiresAt) < new Date();
-            
             return (
               <div
                 key={coupon.id}
@@ -123,7 +129,6 @@ const CouponList = () => {
                 </div>
                 <div className="p-6">
                   <h2 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h2>
-                  
                   <div className="mt-4 text-center">
                     <div className="bg-gray-100 py-3 px-4 rounded-lg text-center">
                       <p className="text-sm text-gray-600 mb-1">Código do Cupom</p>
@@ -144,7 +149,6 @@ const CouponList = () => {
                       </div>
                     </div>
                   </div>
-                  
                   <div className="mt-4 flex justify-between items-center">
                     <div>
                       <span className="text-gray-600">Desconto:</span>
@@ -157,7 +161,6 @@ const CouponList = () => {
                       </span>
                     </div>
                   </div>
-                  
                   <div className="mt-6 flex justify-between">
                     <Link
                       to={`/courses/${coupon.courseId}`}
@@ -182,4 +185,4 @@ const CouponList = () => {
   );
 };
 
-export default CouponList; 
+export default CouponList;

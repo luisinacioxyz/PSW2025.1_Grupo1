@@ -146,12 +146,18 @@ exports.getRatingsByCourse = async (req, res) => {
 
 exports.getRatingsByUser = async (req, res) => {
   try {
+    const userId = req.params.userId;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
     const { page = 1, limit = 10 } = req.query;
-    const total = await Rating.countDocuments({ userId: req.params.userId });
-    const ratings = await Rating.find({ userId: req.params.userId })
+    const total = await Rating.countDocuments({ userId });
+    const ratings = await Rating.find({ userId })
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
+
     res.json({
       ratings,
       pagination: {

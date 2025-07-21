@@ -7,7 +7,6 @@ import { fetchUserList } from './store/userListSlice';
 import HomePage from './components/HomePage';
 import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
-import CreateCourse from './components/CreateCourse';
 import Login from './components/Login';
 import Register from './components/Register';
 import RatingList from './components/RatingList';
@@ -85,7 +84,7 @@ function App() {
               path="/courses/create" 
               element={
                 <ProtectedRoute>
-                  <CreateCourse />
+                  <MyCourses />
                 </ProtectedRoute>
               } 
             />
@@ -93,7 +92,7 @@ function App() {
               path="/create-course" 
               element={
                 <ProtectedRoute>
-                  <CreateCourse />
+                  <MyCourses />
                 </ProtectedRoute>
               } 
             />

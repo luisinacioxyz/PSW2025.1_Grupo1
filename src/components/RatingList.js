@@ -22,25 +22,63 @@ const RatingList = () => {
   }, [allRatings, user]);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
+  if (!user) {
+    navigate('/login');
+    return;
+  }
+
+  const loadData = async () => {
+    setIsLoading(true);
+    try {
+      // Use user._id instead of user.id
+      await dispatch(fetchRatingsByUser(user._id)).unwrap();
+    } catch (err) {
+      console.error('Erro ao carregar:', err);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        // Buscar avaliações específicas do usuário
-        await dispatch(fetchRatingsByUser(user.id)).unwrap();
-      } catch (err) {
-        console.error('Erro ao carregar:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  loadData();
+}, [dispatch, navigate, user]);useEffect(() => {
+  if (!user) {
+    navigate('/login');
+    return;
+  }
 
-    loadData();
-  }, [dispatch, navigate, user]);
+  const loadData = async () => {
+    setIsLoading(true);
+    try {
+      // Use user._id instead of user.id
+      await dispatch(fetchRatingsByUser(user._id)).unwrap();
+    } catch (err) {
+      console.error('Erro ao carregar:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  loadData();
+}, [dispatch, navigate, user]);useEffect(() => {
+  if (!user) {
+    navigate('/login');
+    return;
+  }
+
+  const loadData = async () => {
+    setIsLoading(true);
+    try {
+      // Use user._id instead of user.id
+      await dispatch(fetchRatingsByUser(user._id)).unwrap();
+    } catch (err) {
+      console.error('Erro ao carregar:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  loadData();
+}, [dispatch, navigate, user]);
 
   const handleDelete = async id => {
     try {

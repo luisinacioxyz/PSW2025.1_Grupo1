@@ -194,12 +194,20 @@ const CourseList = () => {
               <div className="px-4 pb-4 flex justify-between items-center">
                 <span className="text-purple-600 font-bold text-xl">R${course.price.toFixed(2)}</span>
                 <div className="flex space-x-2">
+                  {course.id ? ( 
                   <Link
                     to={`/courses/${course.id}`} 
                     className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
                   >
                     Detalhes
                   </Link>
+                  ) : (
+                    <span className="text-gray-500">ID não disponível</span>
+                  )}
+                    <button
+                      disabled
+                      className="text-gray-500 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-sm font-medium"
+                    ></button>
                   <a 
                     href={course.url} 
                     target="_blank" 

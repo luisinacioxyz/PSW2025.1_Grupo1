@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { loginUser, clearError } from '../store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { loginUser, clearError } from '../store/authSlice';
+import React, { useState, useEffect } from 'react';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -16,17 +16,9 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-  // Verificar se há mensagem de sucesso do registro
-  useEffect(() => {
-    if (location.state?.message) {
-      setSuccessMessage(location.state.message);
-      // Limpar o state para não mostrar a mensagem novamente
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-  }, [location, navigate]);
-
-  // Redirecionar se já estiver autenticado
+  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       const from = location.state?.from?.pathname || '/';
@@ -34,12 +26,38 @@ const Login = () => {
     }
   }, [isAuthenticated, navigate, location]);
 
-  // Limpar erro quando o componente for desmontado
+  // Show success message if coming from registration
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+      // Clear the state to prevent showing the message again
+      navigate(location.pathname, { replace: true, state: {} });
+    } 
+  }, [location, navigate]);
+
+  // Clear errors when the component is unmounted
   useEffect(() => {
     return () => {
-      dispatch(clearError());
+      //dispatch(clearError());
     };
   }, [dispatch]);
+
+  // Clear autofilled fields
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      
+      if (emailInput && emailInput.value && !formData.email) {
+        emailInput.value = '';
+      }
+      if (passwordInput && passwordInput.value && !formData.password) {
+        passwordInput.value = '';
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [formData.email, formData.password]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,20 +69,20 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dados enviados:", formData);
     
     if (!formData.email || !formData.password) {
       return;
     }
 
-    try {
-      await dispatch(loginUser(formData)).unwrap();
-      // Sucesso - o redirect será feito pelo useEffect
-    } catch (error) {
-      // Erro já será mostrado pelo estado do Redux
-      console.error('Login failed:', error);
-    }
-  };
+  try {
+    const response = await dispatch(loginUser(formData)).unwrap();
+    console.log('Login successful:', response);
+    setLoginError(''); // Clear any previous login errors
+  } catch (error) {
+    setLoginError(error.message || 'Email ou senha incorretos');
+    console.error('Login failed:', error);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -89,7 +107,13 @@ const Login = () => {
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit} autoComplete="new-password">
+          {/* Campos falsos para enganar o navegador */}
+          <div style={{ display: 'none' }}>
+            <input type="text" name="fakeusernameremembered" />
+            <input type="password" name="fakepasswordremembered" />
+          </div>
+          
           {successMessage && (
             <div className="bg-green-50 border-l-4 border-green-500 p-4">
               <div className="flex">
@@ -105,7 +129,7 @@ const Login = () => {
             </div>
           )}
 
-          {error && (
+          {(error || loginError) && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
@@ -114,7 +138,7 @@ const Login = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
+                  <p className="text-sm text-red-700">{loginError || error}</p>
                 </div>
               </div>
             </div>
@@ -129,11 +153,19 @@ const Login = () => {
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
+                autoComplete="new-password"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                style={{
+                  backgroundColor: 'white !important',
+                  backgroundImage: 'none !important',
+                  color: 'rgb(17, 24, 39) !important'
+                }}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm [&:-webkit-autofill]:!bg-white [&:-webkit-autofill]:!bg-none [&:-webkit-autofill]:!text-gray-900"
                 placeholder="Seu email"
               />
             </div>
@@ -147,11 +179,19 @@ const Login = () => {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="appearance-none relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                  style={{
+                    backgroundColor: 'white !important',
+                    backgroundImage: 'none !important',
+                    color: 'rgb(17, 24, 39) !important'
+                  }}
+                  className="appearance-none relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm [&:-webkit-autofill]:!bg-white [&:-webkit-autofill]:!bg-none [&:-webkit-autofill]:!text-gray-900"
                   placeholder="Sua senha"
                 />
                 <button
