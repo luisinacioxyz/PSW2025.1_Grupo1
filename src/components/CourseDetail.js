@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCourses, deleteCourse } from '../store/courseSlice';
 import { fetchRatings, addRating, deleteRating } from '../store/ratingSlice';
-import { addCourseToList, removeCourseFromList } from '../store/userListSlice';
+import { addCourseToList, removeCourseFromList, fetchUserList } from '../store/userListSlice';
 import RatingForm from './RatingForm';
 import CouponForm from './CouponForm';
 import CourseForm from './CourseForm';
@@ -34,7 +34,12 @@ const CourseDetail = () => {
       dispatch(fetchCourses());
     }
 
-    const selectedCourse = courses.find((c) => c.id === courseId);
+    // Load user list if user is authenticated
+    if (user && userListStatus === 'idle') {
+      dispatch(fetchUserList());
+    }
+
+    const selectedCourse = courses.find((c) => c._id === courseId);
     if (selectedCourse) {
       setCourse(selectedCourse);
       dispatch(fetchRatings(courseId));
@@ -43,7 +48,7 @@ const CourseDetail = () => {
       // If courses are loaded but we can't find this course, it might not exist
       setIsLoading(false);
     }
-  }, [courseId, courses, coursesStatus, dispatch]);
+  }, [courseId, courses, coursesStatus, dispatch, user, userListStatus]);
 
   const handleAddRating = async (ratingData) => {
     if (!user) return;
@@ -84,7 +89,7 @@ const CourseDetail = () => {
     return user && (user.id === course?.createdBy || user.role === 'admin');
   };
 
-  const isInUserList = userList && userList.courseIds && userList.courseIds.includes(courseId);
+  const isInUserList = userList && userList.courseIds && userList.courseIds.some(course => course._id === courseId);
 
   const handleAddToList = async () => {
     if (!user || !userList || addingToList) return;
@@ -92,11 +97,8 @@ const CourseDetail = () => {
     try {
       setAddingToList(true);
       
-      // Use the new addCourseToList thunk
-      await dispatch(addCourseToList({ 
-        userList, 
-        courseId 
-      })).unwrap();
+      // Use the addCourseToList thunk
+      await dispatch(addCourseToList(courseId)).unwrap();
       
       console.log('Course added to list successfully');
     } catch (error) {
@@ -112,11 +114,8 @@ const CourseDetail = () => {
     try {
       setRemovingFromList(true);
       
-      // Use the new removeCourseFromList thunk
-      await dispatch(removeCourseFromList({ 
-        userList, 
-        courseId 
-      })).unwrap();
+      // Use the removeCourseFromList thunk
+      await dispatch(removeCourseFromList(courseId)).unwrap();
       
       console.log('Course removed from list successfully');
     } catch (error) {

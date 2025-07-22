@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchUserList, removeFromList } from '../store/userListSlice';
-import { fetchCourses } from '../store/courseSlice';
+import { fetchUserList, removeCourseFromList } from '../store/userListSlice';
 
 const MyList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const { userList, status: userListStatus } = useSelector((state) => state.userList);
-  const { courses, status: coursesStatus } = useSelector((state) => state.courses);
   const [isLoading, setIsLoading] = useState(true);
   const [savedCourses, setSavedCourses] = useState([]);
   const [removingCourses, setRemovingCourses] = useState({});
@@ -23,25 +21,19 @@ const MyList = () => {
     const loadData = async () => {
       setIsLoading(true);
 
-      if (coursesStatus === 'idle') {
-        await dispatch(fetchCourses()).unwrap();
-      }
-
       await dispatch(fetchUserList()).unwrap();
 
       setIsLoading(false);
     };
 
     loadData();
-  }, [dispatch, navigate, user, coursesStatus]);
+  }, [dispatch, navigate, user]);
   useEffect(() => {
-    if (userList && userList.courseIds && courses.length > 0) {
-      const myCourses = userList.courseIds
-        .map(id => courses.find(course => course.id === id))
-        .filter(Boolean); // Filter out any undefined values
-      setSavedCourses(myCourses);
+    if (userList && userList.courseIds) {
+      // A API já retorna os cursos populados, então podemos usá-los diretamente.
+      setSavedCourses(userList.courseIds);
     }
-  }, [userList, courses]);
+  }, [userList]);
 
   const handleRemoveFromList = async (courseId) => {
     if (!user || !userList) return;
@@ -50,7 +42,7 @@ const MyList = () => {
       setRemovingCourses(prev => ({ ...prev, [courseId]: true }));
 
       // Use the removeFromList thunk
-      await dispatch(removeFromList(courseId)).unwrap();
+      await dispatch(removeCourseFromList(courseId)).unwrap();
 
       console.log('Course removed from list successfully');
     } catch (error) {
@@ -60,7 +52,7 @@ const MyList = () => {
     }
   };
 
-  if (isLoading || userListStatus === 'loading' || coursesStatus === 'loading') {
+  if (isLoading || userListStatus === 'loading') {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
@@ -96,10 +88,10 @@ const MyList = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {savedCourses.map((course) => (
             <div
-              key={course.id}
+              key={course._id}
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
-              <Link to={`/courses/${course.id}`} className="block">
+              <Link to={`/courses/${course._id}`} className="block">
                 <img
                   src={course.imageUrl}
                   alt={course.title}
@@ -142,17 +134,17 @@ const MyList = () => {
                 <span className="text-purple-600 font-bold text-xl">R${course.price.toFixed(2)}</span>
                 <div className="flex space-x-2">
                   <Link
-                    to={`/courses/${course.id}`}
+                    to={`/courses/${course._id}`}
                     className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
                   >
                     Detalhes
                   </Link>
                   <button
-                    onClick={() => handleRemoveFromList(course.id)}
-                    disabled={removingCourses[course.id]}
+                    onClick={() => handleRemoveFromList(course._id)}
+                    disabled={removingCourses[course._id]}
                     className="text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"
                   >
-                    {removingCourses[course.id] ? (
+                    {removingCourses[course._id] ? (
                       <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>

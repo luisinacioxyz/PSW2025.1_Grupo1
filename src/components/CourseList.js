@@ -148,10 +148,10 @@ const CourseList = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCourses.map((course) => (
             <div
-              key={course.id}
+              key={course._id}
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
-              <Link to={`/courses/${course.id}`} className="block">
+              <Link to={`/courses/${course._id}`} className="block">
                 <img
                   src={course.imageUrl}
                   alt={course.title}
@@ -194,9 +194,9 @@ const CourseList = () => {
               <div className="px-4 pb-4 flex justify-between items-center">
                 <span className="text-purple-600 font-bold text-xl">R${course.price.toFixed(2)}</span>
                 <div className="flex space-x-2">
-                  {course.id ? ( 
+                  {course._id ? ( 
                   <Link
-                    to={`/courses/${course.id}`} 
+                    to={`/courses/${course._id}`} 
                     className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
                   >
                     Detalhes
@@ -233,7 +233,7 @@ const CourseList = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          setShowDeleteConfirm(course.id);
+                          setShowDeleteConfirm(course._id);
                         }}
                         className="text-red-600 bg-red-100 hover:bg-red-200 px-3 py-2 rounded-md text-sm font-medium"
                       >
