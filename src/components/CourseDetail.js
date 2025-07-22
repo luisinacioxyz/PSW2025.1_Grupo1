@@ -92,7 +92,7 @@ const CourseDetail = () => {
   };
 
   const canManageCourse = () => {
-    return user && (user.id === course?.createdBy || user.role === 'admin');
+    return user && user.role === 'admin';
   };
 
   const isInUserList = userList && userList.courseIds && userList.courseIds.some(course => course._id === courseId);
