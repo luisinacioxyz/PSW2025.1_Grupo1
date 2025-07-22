@@ -59,7 +59,7 @@ const CourseList = () => {
   };
 
   const canManageCourse = (course) => {
-    return user && (user.id === course.createdBy || user.role === "admin");
+    return user && user.role === "admin";
   };
 
   if (status === "loading" || isLoading) {
