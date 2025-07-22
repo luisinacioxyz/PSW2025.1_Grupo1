@@ -29,6 +29,31 @@ exports.register = async (req, res) => {
   }
 };
 
+// Método chamado após autenticação bem-sucedida pelo Passport
+exports.loginSuccess = (req, res) => {
+  try {
+    // req.user foi populado pelo Passport após autenticação bem-sucedida
+    const user = req.user;
+    
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE }
+    );
+    
+    const { password: _, ...data } = user.toObject();
+    res.json({ 
+      message: 'Login realizado com sucesso', 
+      token, 
+      user: data 
+    });
+  } catch (err) {
+    console.error('Erro ao gerar token:', err);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+};
+
+// Manter o método original como backup (será removido depois)
 exports.login = async (req, res) => {
     
   const errors = validationResult(req);

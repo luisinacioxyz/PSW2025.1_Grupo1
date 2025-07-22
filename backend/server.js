@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cors     = require('cors');
 const helmet   = require('helmet');
 const morgan   = require('morgan');
+const passport = require('./config/passport');
 
 const authRoutes     = require('./routes/auth');
 const courseRoutes   = require('./routes/courses');
@@ -32,6 +33,9 @@ app.use(morgan('combined'));
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Inicializar Passport
+app.use(passport.initialize());
 
 // 4️⃣ rotas
 app.use('/api/auth', authRoutes);

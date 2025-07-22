@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { authenticateToken, optionalAuth } = require('../middleware/auth');
+const { authenticateJWT, optionalAuth } = require('../middleware/auth');
 const ratingController = require('../controllers/RatingController');
 
 const router = express.Router();
@@ -14,9 +14,9 @@ const ratingValidation = [
 
 router.get('/', optionalAuth, ratingController.getAllRatings);
 router.get('/:id', optionalAuth, ratingController.getRatingById);
-router.post('/', authenticateToken, ratingValidation, ratingController.createRating);
-router.put('/:id', authenticateToken, ratingController.updateRating);
-router.delete('/:id', authenticateToken, ratingController.deleteRating);
+router.post('/', authenticateJWT, ratingValidation, ratingController.createRating);
+router.put('/:id', authenticateJWT, ratingController.updateRating);
+router.delete('/:id', authenticateJWT, ratingController.deleteRating);
 router.get('/course/:courseId', optionalAuth, ratingController.getRatingsByCourse);
 router.get('/user/:userId', optionalAuth, ratingController.getRatingsByUser);
 

@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const router = express.Router();
 
 const courseController = require('../controllers/CourseController');
-const { authenticateToken, optionalAuth } = require('../middleware/auth');
+const { authenticateJWT, optionalAuth } = require('../middleware/auth');
 
 const courseValidation = [
   body('title').trim().isLength({ min: 3 }).withMessage('Título deve ter pelo menos 3 caracteres'),
@@ -16,9 +16,9 @@ const courseValidation = [
 
 router.get('/', optionalAuth, courseController.listCourses);
 router.get('/:id', optionalAuth, courseController.getCourse);
-router.post('/', authenticateToken, courseValidation, courseController.createCourse);
-router.put('/:id', authenticateToken, courseValidation, courseController.updateCourse);
-router.delete('/:id', authenticateToken, courseController.deleteCourse);
+router.post('/', authenticateJWT, courseValidation, courseController.createCourse);
+router.put('/:id', authenticateJWT, courseValidation, courseController.updateCourse);
+router.delete('/:id', authenticateJWT, courseController.deleteCourse);
 router.get('/platforms/list', courseController.listPlatforms);
 router.get('/user/:userId', optionalAuth, courseController.getCoursesByUser);
 

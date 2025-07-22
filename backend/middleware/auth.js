@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const User = require('../models/User');
 
-// Middleware para verificar token JWT
+// Novo middleware usando Passport JWT
+const authenticateJWT = passport.authenticate('jwt', { session: false });
+
+// Middleware para verificar token JWT (versão original - mantida como backup)
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
@@ -68,7 +72,8 @@ function requireOwnershipOrAdmin(paramKey = 'userId') {
 }
 
 module.exports = {
-  authenticateToken,
+  authenticateJWT,        // Novo middleware usando Passport
+  authenticateToken,      // Middleware original (backup)
   optionalAuth,
   requireAdmin,
   requireOwnershipOrAdmin

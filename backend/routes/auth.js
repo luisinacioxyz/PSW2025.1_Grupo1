@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { authenticateToken } = require('../middleware/auth');
+const passport = require('passport');
+const { authenticateJWT, authenticateToken } = require('../middleware/auth');
 const authController = require('../controllers/authController');
 
 const router = express.Router();
@@ -19,15 +20,15 @@ const loginValidation = [
 
 // Rotas de autenticação
 router.post('/register', registerValidation, authController.register);
-router.post('/login',    loginValidation,    authController.login);
-router.get('/me',         authenticateToken,  authController.me);
+router.post('/login', loginValidation, passport.authenticate('local', { session: false }), authController.loginSuccess);
+router.get('/me',         authenticateJWT,  authController.me);
 router.put('/profile',    [
-  authenticateToken,
+  authenticateJWT,
   body('name').optional().trim().isLength({ min: 2 }).withMessage('Nome deve ter pelo menos 2 caracteres'),
   body('email').optional().isEmail().withMessage('Email inválido')
 ], authController.updateProfile);
 router.post('/change-password', [
-  authenticateToken,
+  authenticateJWT,
   body('currentPassword').notEmpty().withMessage('Senha atual é obrigatória'),
   body('newPassword').isLength({ min: 6 }).withMessage('Nova senha deve ter pelo menos 6 caracteres')
 ], authController.changePassword);
