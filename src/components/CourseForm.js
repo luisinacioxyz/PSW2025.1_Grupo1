@@ -43,20 +43,20 @@ const CourseForm = ({ course = null, onCancel }) => {
     try {
       const courseData = {
         ...formData,
-        createdBy: user?.id || null,
+        createdBy: user?._id || null,
         rating: course?.rating || 0,
         totalRatings: course?.totalRatings || 0,
       };
       
       if (course) {
         // Update existing course
-        await dispatch(updateCourse({ ...courseData, id: course.id })).unwrap();
+        await dispatch(updateCourse({ ...courseData, id: course._id })).unwrap();
         if (onCancel) onCancel();
-        else navigate(`/courses/${course.id}`);
+        else navigate(`/courses/${course._id}`);
       } else {
         // Add new course
         const result = await dispatch(addCourse(courseData)).unwrap();
-        navigate(`/courses/${result.id}`);
+        navigate(`/courses/${result._id}`);
       }
     } catch (err) {
       setError(err.message || 'Failed to save the course. Please try again.');

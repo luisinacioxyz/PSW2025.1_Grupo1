@@ -115,7 +115,7 @@ const MyCourses = () => {
               key={course.id}
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
-              <Link to={`/courses/${course.id}`} className="block">
+              <Link to={`/courses/${course._id}`} className="block">
                 <img
                   src={course.imageUrl}
                   alt={course.title}

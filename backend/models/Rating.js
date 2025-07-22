@@ -7,6 +7,7 @@ const ratingSchema = new Schema({
   userId:   { type: Schema.Types.ObjectId, ref: 'User',   required: true },
   rating:   { type: Number,     required: true },
   review:   String,
+  usedForCoupon: { type: Boolean, default: false }, // Nova: indica se esta avaliação já foi usada para gerar cupom
 }, { timestamps: true });
 
 module.exports = mongoose.model('Rating', ratingSchema);

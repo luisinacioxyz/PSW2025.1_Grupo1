@@ -101,10 +101,10 @@ const HomePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredCourses.map((course) => (
             <div
-              key={course.id}
+              key={course._id}
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
-              <Link to={`/courses/${course.id}`}>
+              <Link to={`/courses/${course._id}`}>
                 <img
                   src={course.imageUrl}
                   alt={course.title}
@@ -122,7 +122,7 @@ const HomePage = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`h-5 w-5 ${i < Math.floor(course.rating) ? 'text-yellow-400' : 'text-gray-300'
+                          className={`h-5 w-5 ${i < Math.floor(course.rating || 0) ? 'text-yellow-400' : 'text-gray-300'
                             }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -132,7 +132,7 @@ const HomePage = () => {
                         </svg>
                       ))}
                     </div>
-                    <span className="text-gray-600 text-sm ml-2">{course.rating.toFixed(1)}</span>
+                    <span className="text-gray-600 text-sm ml-2">{course.rating ? course.rating.toFixed(1) : '0.0'}</span>
                   </div>
                   <p className="text-purple-600 font-bold">R${course.price.toFixed(2)}</p>
                 </div>

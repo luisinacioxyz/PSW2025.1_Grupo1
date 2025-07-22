@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../utils/api';
+import { addRating, updateRating, deleteRating } from './ratingSlice';
 
 // Async thunks
 export const fetchCourses = createAsyncThunk(
@@ -104,7 +105,7 @@ const courseSlice = createSlice({
       .addCase(fetchCourseById.fulfilled, (state, action) => {
         state.status = 'succeeded';
         // Adicionar ou atualizar curso na lista se não existir
-        const existingIndex = state.courses.findIndex(course => course.id === action.payload.id);
+        const existingIndex = state.courses.findIndex(course => course._id === action.payload._id);
         if (existingIndex !== -1) {
           state.courses[existingIndex] = action.payload;
         } else {
@@ -132,7 +133,7 @@ const courseSlice = createSlice({
         state.error = null;
       })
       .addCase(updateCourse.fulfilled, (state, action) => {
-        const index = state.courses.findIndex(course => course.id === action.payload.id);
+        const index = state.courses.findIndex(course => course._id === action.payload._id);
         if (index !== -1) {
           state.courses[index] = action.payload;
         }
@@ -146,11 +147,37 @@ const courseSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteCourse.fulfilled, (state, action) => {
-        state.courses = state.courses.filter(course => course.id !== action.payload);
+        state.courses = state.courses.filter(course => course._id !== action.payload);
         state.error = null;
       })
       .addCase(deleteCourse.rejected, (state, action) => {
         state.error = action.payload || 'Failed to delete course';
+      })
+      
+      // Escutar as ações do ratingSlice para atualizar os ratings dos cursos
+      .addCase(addRating.fulfilled, (state, action) => {
+        if (action.payload.updatedCourse) {
+          const index = state.courses.findIndex(course => course._id === action.payload.updatedCourse._id);
+          if (index !== -1) {
+            state.courses[index] = { ...state.courses[index], ...action.payload.updatedCourse };
+          }
+        }
+      })
+      .addCase(updateRating.fulfilled, (state, action) => {
+        if (action.payload.updatedCourse) {
+          const index = state.courses.findIndex(course => course._id === action.payload.updatedCourse._id);
+          if (index !== -1) {
+            state.courses[index] = { ...state.courses[index], ...action.payload.updatedCourse };
+          }
+        }
+      })
+      .addCase(deleteRating.fulfilled, (state, action) => {
+        if (action.payload.updatedCourse) {
+          const index = state.courses.findIndex(course => course._id === action.payload.updatedCourse._id);
+          if (index !== -1) {
+            state.courses[index] = { ...state.courses[index], ...action.payload.updatedCourse };
+          }
+        }
       });
   },
 });

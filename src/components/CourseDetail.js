@@ -54,12 +54,18 @@ const CourseDetail = () => {
     if (!user) return;
     
     try {
-      await dispatch(addRating({
+      const response = await dispatch(addRating({
         courseId,
         userId: user.id,
         ...ratingData
       })).unwrap();
+      
       setShowRatingForm(false);
+      
+      // Verificar se o usuário ganhou um cupom
+      if (response.couponEarned) {
+        alert(response.couponEarned.message);
+      }
     } catch (error) {
       console.error('Failed to add rating:', error);
     }
@@ -233,9 +239,9 @@ const CourseDetail = () => {
                   <svg
                     key={i}
                     className={`h-5 w-5 ${
-                      i < Math.floor(course.rating)
+                      i < Math.floor(course.rating || 0)
                         ? 'text-yellow-400'
-                        : i < course.rating
+                        : i < (course.rating || 0)
                         ? 'text-yellow-300'
                         : 'text-gray-300'
                     }`}
@@ -248,7 +254,7 @@ const CourseDetail = () => {
                 ))}
               </div>
               <span className="ml-2 text-gray-600">
-                {course.rating.toFixed(1)} ({course.totalRatings} avaliações)
+                {course.rating ? course.rating.toFixed(1) : '0.0'} ({course.totalRatings || 0} avaliações)
               </span>
             </div>
             

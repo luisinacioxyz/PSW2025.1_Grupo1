@@ -42,7 +42,7 @@ export const addRating = createAsyncThunk(
   async (ratingData, { rejectWithValue }) => {
     try {
       const response = await api.ratings.create(ratingData);
-      return response.rating || response;
+      return response; // Retorna a resposta completa (rating + updatedCourse)
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -54,7 +54,7 @@ export const updateRating = createAsyncThunk(
   async ({ id, ...updateData }, { rejectWithValue }) => {
     try {
       const response = await api.ratings.update(id, updateData);
-      return response.rating || response;
+      return response; // Retorna a resposta completa (rating + updatedCourse)
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -65,8 +65,8 @@ export const deleteRating = createAsyncThunk(
   'ratings/deleteRating',
   async (id, { rejectWithValue }) => {
     try {
-      await api.ratings.delete(id);
-      return id;
+      const response = await api.ratings.delete(id);
+      return response; // Retorna a resposta completa (deletedRatingId + updatedCourse)
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -104,14 +104,14 @@ const ratingSlice = createSlice({
         state.error = action.payload || 'Falha ao buscar avaliações do usuário';
       })
       .addCase(addRating.fulfilled, (state, action) => {
-        state.ratings.push(action.payload);
+        state.ratings.push(action.payload.rating);
       })
       .addCase(updateRating.fulfilled, (state, action) => {
-        const idx = state.ratings.findIndex(r => r.id === action.payload.id);
-        if (idx !== -1) state.ratings[idx] = action.payload;
+        const idx = state.ratings.findIndex(r => r._id === action.payload.rating._id);
+        if (idx !== -1) state.ratings[idx] = action.payload.rating;
       })
       .addCase(deleteRating.fulfilled, (state, action) => {
-        state.ratings = state.ratings.filter(r => r.id !== action.payload);
+        state.ratings = state.ratings.filter(r => r._id !== action.payload.deletedRatingId);
       });
   },
 });

@@ -110,9 +110,9 @@ const MyList = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`h-5 w-5 ${i < Math.floor(course.rating)
+                          className={`h-5 w-5 ${i < Math.floor(course.rating || 0)
                               ? 'text-yellow-400'
-                              : i < course.rating
+                              : i < (course.rating || 0)
                                 ? 'text-yellow-300'
                                 : 'text-gray-300'
                             }`}
@@ -125,7 +125,7 @@ const MyList = () => {
                       ))}
                     </div>
                     <span className="text-gray-600 text-sm ml-2">
-                      ({course.totalRatings} avaliações)
+                      {course.rating ? course.rating.toFixed(1) : '0.0'} ({course.totalRatings || 0} avaliações)
                     </span>
                   </div>
                 </div>

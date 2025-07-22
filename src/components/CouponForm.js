@@ -34,7 +34,7 @@ const CouponForm = ({ onCancel, onSuccess }) => {
   const generateRandomCode = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';
-    const selectedCourse = courses.find(course => course.id === formData.courseId);
+    const selectedCourse = courses.find(course => course._id === formData.courseId);
     
     // Add platform prefix
     if (selectedCourse) {
@@ -116,7 +116,7 @@ const CouponForm = ({ onCancel, onSuccess }) => {
           >
             <option value="">Selecione o Curso</option>
             {courses.map((course) => (
-              <option key={course.id} value={course.id}>
+              <option key={course._id} value={course._id}>
                 {course.title} - {course.platform}
               </option>
             ))}

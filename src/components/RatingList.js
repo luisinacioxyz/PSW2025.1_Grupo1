@@ -1,84 +1,38 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRatings, fetchRatingsByUser, deleteRating } from '../store/ratingSlice';
-import { addCoupon, fetchCoupons } from '../store/couponSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import RatingForm from './RatingForm';
 
 const RatingList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ratings: allRatings, status, error } = useSelector(state => state.ratings);
+  const { ratings, status, error } = useSelector(state => state.ratings);
   const courses = useSelector(state => state.courses.courses);
   const user = useSelector(state => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [userRatings, setUserRatings] = useState([]);
 
   useEffect(() => {
-    if (user && allRatings.length > 0) {
-      setUserRatings(allRatings.filter(r => r.userId === user.id));
+    if (!user) {
+      navigate('/login');
+      return;
     }
-  }, [allRatings, user]);
 
-  useEffect(() => {
-  if (!user) {
-    navigate('/login');
-    return;
-  }
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        // Use user._id instead of user.id
+        await dispatch(fetchRatingsByUser(user._id)).unwrap();
+      } catch (err) {
+        console.error('Erro ao carregar:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const loadData = async () => {
-    setIsLoading(true);
-    try {
-      // Use user._id instead of user.id
-      await dispatch(fetchRatingsByUser(user._id)).unwrap();
-    } catch (err) {
-      console.error('Erro ao carregar:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  loadData();
-}, [dispatch, navigate, user]);useEffect(() => {
-  if (!user) {
-    navigate('/login');
-    return;
-  }
-
-  const loadData = async () => {
-    setIsLoading(true);
-    try {
-      // Use user._id instead of user.id
-      await dispatch(fetchRatingsByUser(user._id)).unwrap();
-    } catch (err) {
-      console.error('Erro ao carregar:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  loadData();
-}, [dispatch, navigate, user]);useEffect(() => {
-  if (!user) {
-    navigate('/login');
-    return;
-  }
-
-  const loadData = async () => {
-    setIsLoading(true);
-    try {
-      // Use user._id instead of user.id
-      await dispatch(fetchRatingsByUser(user._id)).unwrap();
-    } catch (err) {
-      console.error('Erro ao carregar:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  loadData();
-}, [dispatch, navigate, user]);
+    loadData();
+  }, [dispatch, navigate, user]);
 
   const handleDelete = async id => {
     try {
@@ -92,20 +46,7 @@ const RatingList = () => {
 
   const handleAddSuccess = async () => {
     try {
-      await dispatch(fetchRatings()).unwrap();
-      const currentCount = userRatings.length;
-      if ((currentCount + 1) % 5 === 0) {
-        const code = `PROMO10-${Date.now().toString().slice(-5)}`;
-        const couponPayload = {
-          userId: user.id,
-          code,
-          discount: 10,
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        };
-        await dispatch(addCoupon(couponPayload)).unwrap();
-        dispatch(fetchCoupons(user.id));
-        alert('🎉 Parabéns! Você ganhou um cupom de 10%');
-      }
+      await dispatch(fetchRatingsByUser(user._id)).unwrap();
     } catch (err) {
       console.error('Erro ao atualizar:', err);
     }
@@ -145,7 +86,7 @@ const RatingList = () => {
         </div>
       )}
 
-      {userRatings.length === 0 ? (
+      {ratings.length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <h3 className="mt-2 text-lg font-medium text-gray-900">
             Nenhuma avaliação encontrada
@@ -156,13 +97,13 @@ const RatingList = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {userRatings.map(r => (
+          {ratings.map(r => (
             <div
-              key={r.id}
+              key={r._id}
               className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300"
             >
               <h2 className="text-xl font-semibold mb-2 text-gray-800">
-                {courses.find(c => c.id === r.courseId)?.title || 'Curso Desconhecido'}
+                {courses.find(c => c._id === r.courseId)?.title || 'Curso Desconhecido'}
               </h2>
               <div className="mb-2">
                 <span className="text-yellow-400">

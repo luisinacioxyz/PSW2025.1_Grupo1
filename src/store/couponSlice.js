@@ -1,36 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { api } from '../utils/api';
 
 export const fetchCoupons = createAsyncThunk(
   'coupons/fetchCoupons',
   async (userId) => {
-    const response = await fetch(`http://localhost:3001/coupons?userId=${userId}`);
-    const data = await response.json();
+    const data = await api.coupons.getMy();
     console.log('Fetched coupons:', data); // Log the response
-    return data; // Ensure this is an array
+    return data.coupons || []; // Ensure this is an array
   }
 );
 
 export const addCoupon = createAsyncThunk(
   'coupons/addCoupon',
   async (coupon) => {
-    const response = await fetch('http://localhost:3001/coupons', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(coupon),
-    });
-    return response.json();
+    const data = await api.coupons.create(coupon);
+    return data;
   }
 );
 
 export const updateCoupon = createAsyncThunk(
   'coupons/updateCoupon',
   async (coupon) => {
-    const response = await fetch(`http://localhost:3001/coupons/${coupon.id}`, {
+    // Note: This function may need to be implemented in api.js if needed
+    const response = await fetch(`http://localhost:3001/api/coupons/${coupon.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(coupon),
     });
@@ -41,9 +37,7 @@ export const updateCoupon = createAsyncThunk(
 export const deleteCoupon = createAsyncThunk(
   'coupons/deleteCoupon',
   async (id) => {
-    await fetch(`http://localhost:3001/coupons/${id}`, {
-      method: 'DELETE',
-    });
+    await api.coupons.delete(id);
     return id;
   }
 );
