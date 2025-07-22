@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCourses, setSearchTerm, setSelectedPlatform, deleteCourse } from '../store/courseSlice';
-import { Link } from 'react-router-dom';
-import CourseForm from './CourseForm';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCourses,
+  setSearchTerm,
+  setSelectedPlatform,
+  deleteCourse,
+} from "../store/courseSlice";
+import { Link } from "react-router-dom";
+import CourseForm from "./CourseForm";
 
 const CourseList = () => {
   const dispatch = useDispatch();
@@ -21,8 +26,6 @@ const CourseList = () => {
       .unwrap()
       .finally(() => setIsLoading(false));
   }, [dispatch]);
-
-
 
   const filteredCourses = courses.filter(
     (course) =>
@@ -51,15 +54,15 @@ const CourseList = () => {
       await dispatch(deleteCourse(courseId)).unwrap();
       setShowDeleteConfirm(null);
     } catch (error) {
-      console.error('Erro ao excluir curso:', error);
+      console.error("Erro ao excluir curso:", error);
     }
   };
 
   const canManageCourse = (course) => {
-    return user && (user.id === course.createdBy || user.role === 'admin');
+    return user && (user.id === course.createdBy || user.role === "admin");
   };
 
-  if (status === 'loading' || isLoading) {
+  if (status === "loading" || isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
@@ -67,10 +70,10 @@ const CourseList = () => {
     );
   }
 
-  if (status === 'failed') {
+  if (status === "failed") {
     return (
       <div className="text-red-500 p-4 text-center">
-        Erro: {error || 'Falha ao carregar cursos'}
+        Erro: {error || "Falha ao carregar cursos"}
       </div>
     );
   }
@@ -84,8 +87,18 @@ const CourseList = () => {
               onClick={handleCancelEdit}
               className="flex items-center text-gray-600 hover:text-gray-800"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               Voltar para lista
             </button>
@@ -101,11 +114,14 @@ const CourseList = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
         Descubra os Melhores Cursos Online
       </h1>
-      
+
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <div className="mb-4 flex flex-col md:flex-row gap-4">
           <div className="flex-1">
-            <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="search"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Buscar Cursos
             </label>
             <input
@@ -118,7 +134,10 @@ const CourseList = () => {
             />
           </div>
           <div className="md:w-1/3">
-            <label htmlFor="platform" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="platform"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Filtrar por Plataforma
             </label>
             <select
@@ -139,11 +158,26 @@ const CourseList = () => {
 
       {filteredCourses.length === 0 ? (
         <div className="text-center text-gray-500 py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 13a1 1 0 110-2 1 1 0 010 2z" />
+          <svg
+            className="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 13a1 1 0 110-2 1 1 0 010 2z"
+            />
           </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-500">Nenhum curso encontrado</h3>
-          <p className="mt-1 text-sm text-gray-500">Tente ajustar sua busca ou filtro para encontrar o que você está procurando.</p>
+          <h3 className="mt-2 text-sm font-medium text-gray-500">
+            Nenhum curso encontrado
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Tente ajustar sua busca ou filtro para encontrar o que você está
+            procurando.
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -160,12 +194,16 @@ const CourseList = () => {
                 />
                 <div className="p-4">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                      {course.title}
+                    </h3>
                     <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
                       {course.platform}
                     </span>
                   </div>
-                  <p className="text-gray-600 mb-4 text-sm h-12 overflow-hidden">{course.description}</p>
+                  <p className="text-gray-600 mb-4 text-sm h-12 overflow-hidden">
+                    {course.description}
+                  </p>
                   <div className="flex items-center mb-4">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
@@ -173,10 +211,10 @@ const CourseList = () => {
                           key={i}
                           className={`h-5 w-5 ${
                             i < Math.floor(course.rating || 0)
-                              ? 'text-yellow-400'
+                              ? "text-yellow-400"
                               : i < (course.rating || 0)
-                              ? 'text-yellow-300'
-                              : 'text-gray-300'
+                              ? "text-yellow-300"
+                              : "text-gray-300"
                           }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -187,31 +225,30 @@ const CourseList = () => {
                       ))}
                     </div>
                     <span className="text-gray-600 text-sm ml-2">
-                      {course.rating ? course.rating.toFixed(1) : '0.0'} ({course.totalRatings || 0} avaliações)
+                      {course.rating ? course.rating.toFixed(1) : "0.0"} (
+                      {course.totalRatings || 0} avaliações)
                     </span>
                   </div>
                 </div>
               </Link>
               <div className="px-4 pb-4 flex justify-between items-center">
-                <span className="text-purple-600 font-bold text-xl">R${course.price.toFixed(2)}</span>
+                <span className="text-purple-600 font-bold text-xl">
+                  R${course.price.toFixed(2)}
+                </span>
                 <div className="flex space-x-2">
-                  {course._id ? ( 
-                  <Link
-                    to={`/courses/${course._id}`} 
-                    className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
-                  >
-                    Detalhes
-                  </Link>
+                  {course._id ? (
+                    <Link
+                      to={`/courses/${course._id}`}
+                      className="text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-medium"
+                    >
+                      Detalhes
+                    </Link>
                   ) : (
                     <span className="text-gray-500">ID não disponível</span>
                   )}
-                    <button
-                      disabled
-                      className="text-gray-500 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-sm font-medium"
-                    ></button>
-                  <a 
-                    href={course.url} 
-                    target="_blank" 
+                  <a
+                    href={course.url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-700 bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-md text-sm font-medium"
                     onClick={(e) => e.stopPropagation()}
@@ -257,7 +294,8 @@ const CourseList = () => {
               Confirmar Exclusão
             </h3>
             <p className="text-sm text-gray-500 mb-6">
-              Tem certeza que deseja excluir este curso? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir este curso? Esta ação não pode ser
+              desfeita.
             </p>
             <div className="flex justify-end space-x-3">
               <button
@@ -280,4 +318,4 @@ const CourseList = () => {
   );
 };
 
-export default CourseList; 
+export default CourseList;
